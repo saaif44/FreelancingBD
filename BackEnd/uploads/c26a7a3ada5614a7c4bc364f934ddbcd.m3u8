@@ -1,0 +1,5 @@
+#EXTM3U
+#EXTINF:1460, Dune
+#EXTVLCOPT:network-caching=1000
+http://cdn1.discoveryftp.net/Movies/English/2021/Dune/Dune.2021.2160p.4K.WEB.x265.10bit.HDR.AAC5.1-%5BYTS.MX%5D.mkv
+        

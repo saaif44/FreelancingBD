@@ -1,0 +1,30 @@
+import { PrismaService } from '../prisma/prisma.service';
+import { RoleType } from '@prisma/client';
+export declare class DashboardService {
+    private readonly prisma;
+    constructor(prisma: PrismaService);
+    getUserRole(userId: number): Promise<RoleType>;
+    getJobs(): Promise<{
+        id: number;
+        title: string;
+        description: string;
+        budget: import("@prisma/client/runtime/library").Decimal;
+        deadline: Date;
+        is_payment_verified: boolean;
+        is_job_completed: boolean;
+        created_at: Date;
+        updated_at: Date;
+        client_profile_id: number;
+        freelancer_profile_id: number;
+    }[]>;
+    getServices(): Promise<{
+        id: number;
+        title: string;
+        description: string;
+        standard_offer: import("@prisma/client/runtime/library").Decimal;
+        premium_offer: import("@prisma/client/runtime/library").Decimal;
+        butter_offer: import("@prisma/client/runtime/library").Decimal;
+        freelancer_profile_id: number;
+    }[]>;
+    changeUserRole(userId: number, newRole: RoleType): Promise<void>;
+}

@@ -1,0 +1,233 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+enum RoleType {
+  CLIENT
+  FREELANCER
+}
+
+model User {
+  id            Int       @id @default(autoincrement())
+  username      String
+  email         String @unique
+  password      String
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+  role          RoleType @default(FREELANCER)
+  balance       Decimal
+  language_known String
+  nationality   String
+  address       String
+  phone_number  String  @unique
+  nid_number    String
+  FreelancerProfile FreelancerProfile?
+  ClientProfile ClientProfile?
+  avatarUrl     String?
+  chatrooms     Chatroom[] @relation("chatroomUser")
+  payslipSender             Payslip[]   @relation("PayslipSender")
+  payslipReceiver           Payslip[]   @relation("PayslipReceiver")
+  //sentTransactions          Transaction[]      @relation("SentTransactions")
+  //receivedTransactions      Transaction[]  @relation("ReceivedTransactions")
+  sentMessages                  Message[]      @relation("SentMessagesToUser")
+  recievedMessages              Message[]  @relation("ReceivedMessagesFromUser")
+  filesFromUsers              File[] @relation("FileSentUser")
+  filesRecievedFromUsers      File[] @relation("FileRecievedUser")
+}
+
+model FreelancerProfile {
+  id               Int      @id @default(autoincrement())
+  review           String?
+  ratings          Int?
+  hourly_rate      Decimal?
+  completed_jobs   Int?
+  created_services Int?
+  active_jobs      Int?
+  userId          Int @unique
+  user            User?     @relation(fields: [userId], references: [id])
+  Freelancerskills Skill[]
+  //services        Service[]
+  //job Job?
+  bid Bid[]
+}
+
+model ClientProfile {
+  id            Int      @id @default(autoincrement())
+  review        String?
+  ratings       Int?
+  avg_budget    Decimal?
+  created_jobs  Int?
+  userId          Int @unique
+  user          User?     @relation(fields: [userId], references: [id])
+  Requiredskills Skill[]
+ // job Job?
+}
+
+model Skill {
+  id    Int     @id @default(autoincrement())
+  name  String
+  FreelancerProfile FreelancerProfile[]
+  ClientProfile ClientProfile[]
+}
+
+model Message {
+  id           Int      @id @default(autoincrement())
+  content      String
+  senderId     Int
+  recipientId  Int
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+  //  one-to-one relationship with sender
+  sender       User     @relation(name: "SentMessagesToUser", fields: [senderId], references: [id])
+  
+  //  one-to-one relationship with recipient
+  recipient    User     @relation(name: "ReceivedMessagesFromUser", fields: [recipientId], references: [id])
+  files File[]
+  senderName   String?
+  recipientName String?
+}
+
+model Chatroom {
+  id               Int      @id @default(autoincrement())
+  name            String
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+  users            User[] @relation("chatroomUser")
+  //messages         Message[]
+}
+
+model File {
+  id             Int      @id @default(autoincrement())
+  name           String?
+  url            String?
+  filePath       String?
+  message_id     Int?
+  userSend         Message?  @relation(fields: [message_id], references: [id])
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+  bidFileId       Int?
+  bid_file       Bid? @relation(fields: [bidFileId], references: [id])
+  serviceId       Int?
+  serviceFile      Service? @relation(fields: [serviceId], references: [id])
+
+senderId     Int?
+recipientId  Int?
+   //  one-to-one relationship with sender
+  sender       User?     @relation(name: "FileSentUser", fields: [senderId], references: [id])
+  
+  //  one-to-one relationship with recipient
+  recipient    User?    @relation(name: "FileRecievedUser", fields: [recipientId], references: [id])
+
+}
+
+model Service {
+  id                 Int      @id @default(autoincrement())
+  title              String
+  description        String
+  standard_offer     Decimal
+  premium_offer      Decimal
+  butter_offer       Decimal
+  freelancer_profile_id Int?
+  // FreelancerProfile FreelancerProfile @relation(fields: [freelancer_profile_id], references: [id])
+  file File[]
+}
+
+model Job {
+  id                   Int      @id @default(autoincrement())
+  title                String?
+  description          String?
+  budget               Decimal?
+  deadline             DateTime?
+  is_payment_verified Boolean?
+  is_job_completed    Boolean?
+  created_at           DateTime @default(now())
+  updated_at           DateTime @updatedAt
+  // ClientProfile       ClientProfile   @relation(fields: [client_profile_id], references: [id])
+  // FreelancerProfile   FreelancerProfile @relation(fields: [freelancer_profile_id], references: [id])
+  client_profile_id    Int?
+  freelancer_profile_id Int?
+  payslip             Payslip?
+}
+
+model Bid {
+  id                   Int      @id @default(autoincrement())
+  description          String
+  attachment           String
+  offer_time           Int
+  offer_rate           Decimal
+  created_at           DateTime @default(now())
+  updated_at           DateTime @updatedAt
+  freelancer_profile_id Int
+  FreelancerProfile FreelancerProfile @relation(fields: [freelancer_profile_id], references: [id])
+  file File[]
+}
+
+model Transaction {
+  id             Int      @id @default(autoincrement())
+  amount         Float
+  type           String   // 'deposit' or 'withdrawal'
+  description    String?
+  createdAt      DateTime @default(now())
+
+  // relationship with User for sender and receiver
+  //sender         User     @relation("SentTransactions", fields: [senderId], references: [id])
+  senderId       Int? 
+  //receiver       User     @relation("ReceivedTransactions", fields: [receiverId], references: [id])
+  receiverId     Int? 
+  timestamp      DateTime @default(now())
+}
+
+// Payslip table to store payment details for each job
+model Payslip {
+  id                  Int       @id @default(autoincrement())
+  jobId               Int  @unique     
+  freelancerId        Int   @unique    
+  clientId            Int   @unique     
+  totalAmount         Float     // Total amount paid for the job
+  createdAt           DateTime  @default(now())
+
+  // relationship with Job
+  job                 Job       @relation(fields: [jobId], references: [id])
+  // relationship with User (client)
+  client              User      @relation("PayslipSender",fields: [clientId], references: [id])
+  freelancer          User      @relation("PayslipReceiver",fields: [freelancerId], references: [id])
+}
+
+
+
+
+// // one-to-one: User ↔ Profile
+// // one-to-many: User ↔ Post
+// // many-to-many: Post ↔ Category
+
+// //my good learning
+// model UserPr {
+//   id      Int      @id @default(autoincrement())
+//   posts   Post[]
+//   profilePr ProfilePr?
+// }
+
+// model ProfilePr {
+//   id     Int  @id @default(autoincrement())
+//   user   UserPr @relation(fields: [userId], references: [id])
+//   userId Int  @unique // relation scalar field (used in the `@relation` attribute above)
+// }
+
+// model Post {
+//   id         Int        @id @default(autoincrement())
+//   author     UserPr       @relation(fields: [authorId], references: [id])
+//   authorId   Int // relation scalar field  (used in the `@relation` attribute above)
+//   categories Category[]
+// }
+
+// model Category {
+//   id    Int    @id @default(autoincrement())
+//   posts Post[]
+// }
+//https://www.prisma.io/docs/orm/prisma-schema/data-model/relations

@@ -1,0 +1,68 @@
+users will be two types freelancers [who work for clients and create services for clients] and clients [who post job or hire freelancers]
+
+ --> First time login will redirect to profile creation page
+              - in this profile creation page user can select what his role will be in this site. Hire [ client ]/ Work [ Freelancer ]  later he can also change this 
+              - skills he is working with.
+              - name, email, phone No, address, nationality, Nid no, profile photo, Bio , languages he knows, hourly rate, job Completed(120), working Job(10),Balance(55000BDT), Activity throughout the year 2024 [jan ....., Feb ....., March ...., April ..., May ...., June ...., July ..., August .. , September .. , December , ] ex. github contribution page ,
+Created Service(5) 
+Those service list.... he can edit/update from his profile Service provides
+
+
+Freelancers perspective 
+
+- after login he will go to a dashboard where jobs related to his skills are available
+- on that dashboard he can filter the amount that he wants to work on like low 1000 BDT to high 20000 BDT 
+- his skills are visible to that dashboard and also he can apply to other skills while removing his current skills
+- but skills should not be more than 20 he applied filter through the dashboard
+- on his dashboard he can see posted job details like Title, Description, Job need to be completed: 1Days, job poster country, language of that job poster's, links (11), Files(4), ratings of that client ex. Josephine(4.88), and the amount of Job payment he offers like 10000BDT also if the payment is verified or not means the job poster completed his payment for this posting JOB.  Job completed the client ever done ex. Josephine completed JOB(111). 
+- Freelancer can click on a posted job and see all the details of that job. details like obviously what were in the posted job including those files and links , how many revisions Client wants ex. revision(5) and in security section there will be payment verified, email verified, phone No verified,  also some review the job posted client got. like the clients past 4 review he got ex. | 111: photo manipulation | BOB | 5 star rating | he is great and smooth working. |
+in that section freelancer can bid by clicking on BID.
+
+Freelancer perspective + Profile Editing
+- user can convert his profile as a client and freelancer both 
+by just changing his current role
+- clicking on profile he should update his profile
+
+BID section for a posted JOB
+- describe 
+- freelancer can throw his service From his Created Service list
+- attachment files
+- links attached
+- revision Unlimited
+- offer time: 1 days
+- offer rates like 12,000
+
+
+Freelancer perspective + Creating Service For Clients
+- a Freelanacer can create 10 services by clicking on creating service
+Service Perspective
+- in a service Freelancer will make Title: ex. I can make professional Audio Designing
+- Description of that service 
+- standard offer [2000BDT, Revisions(4), will done in 2 Days]
+- Premium offer [5000BDT, Revisions(10), will done in 1 Days]
+- Butter offer [10000BDT, Revisions(Unlimited), will done in 1 Days]
+- And pretty much it
+
+Skills perspective
+- freelancer can add skills to his profile. 
+- while a freelancer add skills to one's profile will be counted like designing(1) and also if one's remove skills from his profile also count as desiging(0)  so we need a freelancer counter on a skill. 
+- also we need a job counter for that skill. like if one posted a job related AI will counted as AI(1) and while completing the job counting as AI(0)
+
+Client Perspective/Dashboard 
+- Client can change his role from profile settings and also the other details
+- client can see the Service list of Freelancers provides
+- he can order a service by looking at the details of that service by choosing the service standard premium and butter option
+
+JOB posting
+- Job Title
+- description of that job
+- Files and links attachment 
+- payment for that job
+- skills needed for this job
+- Time the Job Need to be Finished
+- Bidding Time: 1 hour
+- Budget Amount : 10000
+- Payment: Paid (Payment Verified) 
+
+
+Scenario : After login as a Freelancer/worker 
