@@ -39,6 +39,16 @@ let ProfileController = class ProfileController {
     async getAllUserData() {
         return this.profileService.getAllUserData();
     }
+    async deleteUser(id, request) {
+        const decodedToken = request.user;
+        const userId = decodedToken.userId;
+        await this.profileService.deleteUser(id);
+    }
+    async updateUser(updateUserDto, id, request) {
+        const decodedToken = request.user;
+        const userId = decodedToken.userId;
+        return this.profileService.updateUser(userId, id, updateUserDto);
+    }
 };
 exports.ProfileController = ProfileController;
 __decorate([
@@ -71,6 +81,23 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ProfileController.prototype, "getAllUserData", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Object]),
+    __metadata("design:returntype", Promise)
+], ProfileController.prototype, "deleteUser", null);
+__decorate([
+    (0, common_1.Patch)(':id'),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Param)('id')),
+    __param(2, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [profile_dto_1.updateUserDto, Number, Object]),
+    __metadata("design:returntype", Promise)
+], ProfileController.prototype, "updateUser", null);
 exports.ProfileController = ProfileController = __decorate([
     (0, common_1.Controller)('profile'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),

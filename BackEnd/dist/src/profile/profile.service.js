@@ -35,7 +35,7 @@ let ProfileService = class ProfileService {
     }
     async editProfile(userId, id, data) {
         return this.prisma.user.update({
-            where: { id: userId },
+            where: { id: id },
             data: {
                 username: data.name,
                 password: data.password,
@@ -72,6 +72,31 @@ let ProfileService = class ProfileService {
     }
     async getAllUserData() {
         return this.prisma.user.findMany({});
+    }
+    async deleteUser(id) {
+        const user = await this.prisma.user.findUnique({
+            where: { id },
+        });
+        if (!user) {
+            throw new common_1.NotFoundException(`User with ID ${id} not found`);
+        }
+        await this.prisma.user.delete({
+            where: { id },
+        });
+        return true;
+    }
+    async updateUser(userId, id, data) {
+        try {
+            await this.prisma.user.update({
+                where: { id },
+                data,
+            });
+            return true;
+        }
+        catch (error) {
+            console.error('Error updating user:', error);
+            return false;
+        }
     }
 };
 exports.ProfileService = ProfileService;

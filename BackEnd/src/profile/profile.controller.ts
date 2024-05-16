@@ -5,10 +5,10 @@ interface DecodedToken {
 }
 
 // profile.controller.ts
-import { Controller, Post, Put,Get, Body, Param, UseGuards, Req } from '@nestjs/common';
+import { Controller, Post, Put,Get, Body, Param, UseGuards, Req, Patch, Delete } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ProfileService } from './profile.service';
-import { CreateProfileDto, EditProfileDto, UserDataDto } from './dto/profile.dto';
+import { CreateProfileDto, EditProfileDto, UserDataDto , updateUserDto} from './dto/profile.dto';
 import { Request } from 'express';
 import { get, request } from 'http';
 import { User } from '@prisma/client';
@@ -50,5 +50,17 @@ export class ProfileController {
     return this.profileService.getAllUserData();
   }
 
+  @Delete(':id')
+  async deleteUser(@Param('id') id: number, @Req() request: Request): Promise<void> {
+    const decodedToken = request.user as DecodedToken;
+    const userId = decodedToken.userId;
+    await this.profileService.deleteUser(id);
+  }
 
+  @Patch(':id')
+  async updateUser(@Body() updateUserDto: updateUserDto, @Param('id') id: number, @Req() request: Request) {
+    const decodedToken = request.user as DecodedToken;
+    const userId = decodedToken.userId;
+    return this.profileService.updateUser(userId, id, updateUserDto);
+  }
 }

@@ -1,5 +1,5 @@
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateProfileDto, EditProfileDto, UserDataDto } from './dto/profile.dto';
+import { CreateProfileDto, EditProfileDto, UserDataDto, updateUserDto } from './dto/profile.dto';
 export declare class ProfileService {
     private prisma;
     constructor(prisma: PrismaService);
@@ -73,7 +73,7 @@ export declare class ProfileService {
         nid_number: string;
         avatarUrl: string;
     }>;
-    getUserData(userId: any, data: UserDataDto): Promise<{
+    getUserData(userId: number, data: UserDataDto): Promise<{
         id: number;
         username: string;
         email: string;
@@ -119,4 +119,6 @@ export declare class ProfileService {
         nid_number: string;
         avatarUrl: string;
     }[]>;
+    deleteUser(id: number): Promise<boolean>;
+    updateUser(userId: number, id: number, data: updateUserDto): Promise<boolean>;
 }

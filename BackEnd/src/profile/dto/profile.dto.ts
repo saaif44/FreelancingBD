@@ -93,8 +93,31 @@ export class UserDataDto{
   id: number;
 
 
+}
 
 
+export class updateUserDto {
+  @IsString()
+  @IsNotEmpty()
+  name: string;
 
+  @IsString()
+  language_known: string;
+
+  @IsString()
+  nationality: string;
+
+  @IsString()
+  address: string;
+
+  @IsString()
+  phone_number: string;
+
+  @IsString()
+  password: string;
+
+
+  @IsEmail()
+  email: string;
 
 }

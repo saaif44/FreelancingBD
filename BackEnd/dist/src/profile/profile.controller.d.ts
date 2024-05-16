@@ -1,5 +1,5 @@
 import { ProfileService } from './profile.service';
-import { CreateProfileDto, EditProfileDto, UserDataDto } from './dto/profile.dto';
+import { CreateProfileDto, EditProfileDto, UserDataDto, updateUserDto } from './dto/profile.dto';
 import { Request } from 'express';
 export declare class ProfileController {
     private readonly profileService;
@@ -120,4 +120,6 @@ export declare class ProfileController {
         nid_number: string;
         avatarUrl: string;
     }[]>;
+    deleteUser(id: number, request: Request): Promise<void>;
+    updateUser(updateUserDto: updateUserDto, id: number, request: Request): Promise<boolean>;
 }

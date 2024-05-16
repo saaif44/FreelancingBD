@@ -28,3 +28,12 @@ export declare class UserDataDto {
     password: string;
     id: number;
 }
+export declare class updateUserDto {
+    name: string;
+    language_known: string;
+    nationality: string;
+    address: string;
+    phone_number: string;
+    password: string;
+    email: string;
+}
