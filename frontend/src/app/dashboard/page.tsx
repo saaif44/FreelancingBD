@@ -4,16 +4,66 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import RoleToggle from '../RoleToggle/page';
 import Cookies from 'js-cookie';
-import { useRouter } from 'next/router';
+import { Router, useRouter } from 'next/router';
 import Link from 'next/link';
 import { profile } from 'console';
+import { access } from 'fs';
+import { Averia_Libre } from 'next/font/google';
+
 
 
 const Dashboard = () => {
   const [projects, setProjects] = useState([]);
   const [profileData, setProfileData] = useState(null);
   const [logouts, setLogouts] = useState(false);
+  const [isnotValidUser, setNotValidUser] = useState(false);
   const authToken = Cookies.get('accessToken');
+  const [isOpen, setIsOpen] = useState(false);
+
+const profileOptions = [
+  {
+    label: 'Profile',
+    onClick: () => {
+      console.log('Profile clicked');
+    },
+  },
+  {
+    label: 'Messages',
+    onClick: () => {
+      console.log('Messages clicked');
+    },
+  },
+  {
+  label: 'Balance',
+  onClick: () => {
+      console.log('Balance clicked');
+  },
+},
+  {
+    label: 'Logout',
+    onClick: () => {
+      handleLogout();
+    },
+  },
+];
+  
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+
+
+  useEffect(() => {
+    //validation of dashboard
+  if(!authToken){
+    setNotValidUser(true);
+    setTimeout(() => {
+      setLogouts(true);
+    }, 3000);
+   
+      }
+  }, []);
 
   console.log(authToken);
   console.log('Bearer ${authToken}');
@@ -31,6 +81,9 @@ const Dashboard = () => {
       } catch (error) {
         console.error('Error fetching projects:', error);
       }
+
+
+
     };
     fetchProjects();
   }, []);
@@ -53,17 +106,15 @@ const Dashboard = () => {
   }, []);
 
   if (logouts) {
-    const router = useRouter();
     Cookies.remove('accessToken');
-                router.push('./signin');
+    window.location.href='/signin';
      }
 
  
   const handleLogout = async () => {
     try {
         setLogouts(true);
-        window.location.reload();
-    } catch (error) {
+            } catch (error) {
       console.error('Error logging out:', error);
     }
   };
@@ -75,26 +126,41 @@ const Dashboard = () => {
 
   return (
 
+    
+    
     <div className="Role-container">
         <nav className="navbar">
-        <div className="navbar-left">
+        <div className="navbar-left" >
           <RoleToggle />
-          {profileData && ( <p>{profileData.role}</p> )}
+          {profileData && ( <p style={{marginLeft: '10px', color:'lightgray', fontFamily:"arial",fontSize:'11' }}>{profileData.role}</p> )}
         </div>
-        <div className="navbar-middle">
-          {profileData && (
-            <div>
-              <p>Username: {profileData.username}</p>
-              <p>Balance: {profileData.balance}</p>
-            </div>
-          )}
-        </div>
+
         <div className="navbar-right">
-          <button  onClick={handleLogout}><link href="/home"/>Logout</button>
+<div className="dropdown">
+  <button className="dropdown-toggle" onClick={toggleDropdown}>
+    {profileData && profileData.username ? profileData.username : 'Menu'}
+  </button>
+  {isOpen && (
+    <div className="dropdown-menu">
+      <ul>
+        {profileOptions.map((option, index) => (
+          <li key={index} onClick={option.onClick}>
+            {option.label === 'Balance' ? ( <span> Balance ${profileData && profileData.balance} </span> ) : option.label}
+          </li>
+          
+        ))}
+      </ul>
+    </div>
+  )}
+</div>
+
         </div>
       </nav>
         
       
+  
+    {isnotValidUser && (<h1 style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '70%', maxWidth: '500px', backgroundColor: 'red', color: 'white', padding: '20px', borderRadius: '10px', textAlign: 'center', zIndex: '9999' }}>You are not logged in. Please log in to access your dashboard.</h1>)}
+  
 
     <div className="dashboard-container">
         
