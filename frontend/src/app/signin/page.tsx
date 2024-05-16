@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
@@ -23,20 +23,35 @@ const navStyle = {
 };
 
 
+
+
+
 const SigninForm = () => {
 
   const [signedin, setsignedIn] = useState(false);
+  const[admin, setAdmin] = useState(false);
 
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+
+  const authToken = Cookies.get('accessToken');
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+
+  if(admin){
+    // const navigate = useNavigate();
+    const router = useRouter();
+      setTimeout(() => {
+        router.push('/admin/createUser');
+      }, 1000);
+  }
 
   if (signedin) {
     // const navigate = useNavigate();
@@ -46,11 +61,20 @@ const SigninForm = () => {
       }, 1000);
   }
 
+
+ 
+
+ 
+
+  
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:4000/auth/signin', formData);
       const { accessToken } = response.data;
+      const authToken = accessToken;
       Cookies.set('accessToken', accessToken, { expires: 1 }); 
       setSuccessMessage('Signin successful!');
       setErrorMessage('');
@@ -72,7 +96,35 @@ const SigninForm = () => {
         setErrorMessage('Error setting up the request. Please try again later.');
       }
     }
+
+    // useEffect(() => {
+    //   const fetchUserProfile = async () => {
+    //     try {
+    //       const response = await axios.get('http://localhost:4000/profile/user', {
+    //         headers: {
+    //           Authorization: `Bearer ${authToken}`
+    //         }
+    //       });
+    //       if (response.data.role && (response.data.role.toLowerCase() === 'admin')) {
+    //         setAdmin(true);
+    //       }
+    //     } catch (error) {
+    //       console.error('Error fetching user profile:', error);
+    //     }
+    //   };
+    //   fetchUserProfile();
+    // }, []);
+
   };
+
+
+ 
+
+
+  
+
+
+
 
   return (
 
