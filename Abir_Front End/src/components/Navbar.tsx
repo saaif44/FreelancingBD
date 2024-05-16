@@ -2,7 +2,8 @@
 import React from 'react';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
-export const Navbar = () => {
+
+const Navbar = () => {
     const type = Cookies.get("type") || "";
     return (
         <div>
@@ -20,3 +21,5 @@ export const Navbar = () => {
         </div>
     );
 };
+
+export default Navbar;
