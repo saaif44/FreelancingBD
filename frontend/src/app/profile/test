@@ -1,0 +1,34 @@
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // Ensure authToken is not undefined
+      if (!authToken) {
+        console.error('Auth token is undefined');
+        return;
+      }
+  
+      // Decode the auth token to inspect its contents
+      const decodedToken = jwtDecode(authToken);
+      console.log('Decoded token:', decodedToken);
+  
+      // Determine the appropriate claim for user ID and use that instead
+      const userId = decodedToken.sub || decodedToken.id; // Adjust this based on your token structure
+  
+      const response = await axios.post(`http://localhost:4000/profile/edit/${userId}`, formData, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+      if (response.status === 200) {
+        console.log('Profile updated successfully');
+        setMessage('Profile updated successfully');
+      } else {
+        console.error('Failed to update profile');
+        setMessage('Failed to update profile');
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      setMessage('Error updating profile: ' + error.message);
+    }
+  };

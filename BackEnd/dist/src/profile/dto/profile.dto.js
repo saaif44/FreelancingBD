@@ -68,6 +68,14 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], EditProfileDto.prototype, "phone_number", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], EditProfileDto.prototype, "password", void 0);
+__decorate([
+    (0, class_validator_1.IsEmail)(),
+    __metadata("design:type", String)
+], EditProfileDto.prototype, "email", void 0);
 class UserDataDto {
 }
 exports.UserDataDto = UserDataDto;
@@ -105,4 +113,8 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", Number)
 ], UserDataDto.prototype, "balance", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UserDataDto.prototype, "password", void 0);
 //# sourceMappingURL=profile.dto.js.map

@@ -38,10 +38,12 @@ let ProfileService = class ProfileService {
             where: { id: userId },
             data: {
                 username: data.name,
+                password: data.password,
                 language_known: data.language_known,
                 nationality: data.nationality,
                 address: data.address,
                 phone_number: data.phone_number,
+                email: data.email,
             },
             include: {
                 FreelancerProfile: true,
@@ -62,6 +64,8 @@ let ProfileService = class ProfileService {
                 balance: true,
                 FreelancerProfile: true,
                 ClientProfile: true,
+                email: true,
+                password: true,
             },
         });
     }

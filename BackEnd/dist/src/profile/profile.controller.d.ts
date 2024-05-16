@@ -76,12 +76,14 @@ export declare class ProfileController {
     }>;
     getUserData(request: Request, UserDataDto: UserDataDto): Promise<{
         username: string;
+        email: string;
+        password: string;
         role: import(".prisma/client").$Enums.RoleType;
         balance: import("@prisma/client/runtime/library").Decimal;
         language_known: string;
         nationality: string;
-        phone_number: string;
         address: string;
+        phone_number: string;
         FreelancerProfile: {
             id: number;
             review: string;

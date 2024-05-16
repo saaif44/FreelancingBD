@@ -1,0 +1,45 @@
+// ProfileDropdown.js
+import React, { useState } from 'react';
+import UserInfo from './usersGet'
+
+
+
+const ProfileDropdown = ({ profileData }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const profileOptions = [
+    { label: 'Profile', onClick: () => console.log('Profile clicked') , window.location.href = '/profile' },
+    { label: 'Messages', onClick: () => console.log('Messages clicked'),  window.location.href = '/messages' },
+    { label: 'Balance', onClick: () => console.log('Balance clicked') },
+    { label: 'Logout', onClick: handleLogout }
+  ];
+
+  const handleLogout = () => {
+    // Handle logout functionality
+  };
+
+  return (
+    <div className="dropdown">
+      <button className="dropdown-toggle" onClick={toggleDropdown}>
+        <UserInfo profileData={profileData} />
+      </button>
+      {isOpen && (
+        <div className="dropdown-menu">
+          <ul>
+            {profileOptions.map((option, index) => (
+              <li key={index} onClick={option.onClick}>
+                {option.label === 'Balance' ? (<span> Balance ${profileData && profileData.balance} </span>) : option.label}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ProfileDropdown;

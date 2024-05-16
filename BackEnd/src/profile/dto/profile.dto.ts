@@ -1,5 +1,5 @@
 import { Decimal } from '@prisma/client/runtime/library';
-import { IsString, IsNotEmpty, IsEmail, isInt, isNumber } from 'class-validator';
+import { IsString, IsNotEmpty, IsEmail, isInt, isNumber, isEmail, isString } from 'class-validator';
 
 export class CreateProfileDto {
   @IsString()
@@ -46,6 +46,14 @@ export class EditProfileDto {
   @IsString()
   phone_number: string;
 
+  @IsString()
+  password: string;
+
+
+  @IsEmail()
+  email: string;
+
+  
 
 }
 
@@ -78,9 +86,8 @@ export class UserDataDto{
   @IsString()
   balance: number;
 
-
-
-
+  @IsString()
+  password: string;
 
 
 

@@ -11,6 +11,7 @@ generator client {
 enum RoleType {
   CLIENT
   FREELANCER
+  Admin
 }
 
 model User {

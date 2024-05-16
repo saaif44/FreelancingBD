@@ -4,11 +4,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import RoleToggle from '../RoleToggle/page';
 import Cookies from 'js-cookie';
-import { Router, useRouter } from 'next/router';
 import Link from 'next/link';
 import { profile } from 'console';
 import { access } from 'fs';
 import { Averia_Libre } from 'next/font/google';
+import {Router, useRouter} from 'next/router';
 
 
 
@@ -19,18 +19,21 @@ const Dashboard = () => {
   const [isnotValidUser, setNotValidUser] = useState(false);
   const authToken = Cookies.get('accessToken');
   const [isOpen, setIsOpen] = useState(false);
+ 
 
 const profileOptions = [
   {
     label: 'Profile',
     onClick: () => {
       console.log('Profile clicked');
+      window.location.href = '/profile';
     },
   },
   {
     label: 'Messages',
     onClick: () => {
       console.log('Messages clicked');
+      window.location.href = '/message';
     },
   },
   {
@@ -147,7 +150,7 @@ const profileOptions = [
           <li key={index} onClick={option.onClick}>
             {option.label === 'Balance' ? ( <span> Balance ${profileData && profileData.balance} </span> ) : option.label}
           </li>
-          
+
         ))}
       </ul>
     </div>

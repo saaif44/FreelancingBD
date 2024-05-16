@@ -13,6 +13,8 @@ export declare class EditProfileDto {
     nationality: string;
     address: string;
     phone_number: string;
+    password: string;
+    email: string;
 }
 export declare class UserDataDto {
     username: string;
@@ -23,4 +25,5 @@ export declare class UserDataDto {
     email: string;
     phone_number: string;
     balance: number;
+    password: string;
 }
