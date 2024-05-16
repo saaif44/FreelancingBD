@@ -5,7 +5,7 @@ import { UpdateReviewRatingDto } from './dto/update-review-rating.dto';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('review-rating')
-@UseGuards(AuthGuard('jwt'))
+//@UseGuards(AuthGuard('jwt'))
 export class ReviewRatingController {
   constructor(private readonly reviewRatingService: ReviewRatingService) {}
 

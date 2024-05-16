@@ -2,11 +2,20 @@ import { IsEmail, IsEmpty, IsNotEmpty, IsOptional, IsString, IsStrongPassword } 
 
 export class UpdateUserDto {
 
-    @IsString()@IsOptional()
-    name? : string;
+    @IsString()
+    name: string;
 
-    @IsEmail()@IsOptional()
-    email?: string;
+    @IsEmail()
+    email: string;
+
+    @IsNotEmpty() 
+    @IsString()
+    @IsStrongPassword()
+    password : string;
+
+    @IsNotEmpty()
+    @IsString()
+    type : string;
 
    
 

@@ -5,7 +5,7 @@ import { UpdateGigManagementDto } from './dto/update-gig-management.dto';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('gig-management')
-@UseGuards(AuthGuard('jwt'))
+//@UseGuards(AuthGuard('jwt'))
 export class GigManagementController {
   constructor(private readonly gigManagementService: GigManagementService) {}
 

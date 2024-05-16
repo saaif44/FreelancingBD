@@ -5,7 +5,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import {AuthGuard} from '@nestjs/passport';
 
 @Controller('user')
-@UseGuards(AuthGuard('jwt'))
+//@UseGuards(AuthGuard('jwt'))
 export class UserController {
 
   
