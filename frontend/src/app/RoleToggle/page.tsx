@@ -29,7 +29,7 @@ const RoleToggle = () => {
 
   return (
     <div className="role-toggle">
-      <button onClick={handleChange}>Change Role</button>
+      <button onClick={handleChange}>Role</button>
       {roleChanged && <div>Role changed successfully</div>}
     </div>
   );

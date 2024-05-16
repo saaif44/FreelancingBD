@@ -17,13 +17,7 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  color: D9F0FF
 }
 
 @layer utilities {
@@ -89,40 +83,51 @@ body {
 .dashboard-container h2 {
   font-size: 28px;
   font-weight: bold; /* Make h2 bold */
-  color: whitesmoke; /* Set color to black */
+  color:#0a100d; /* Set color to black */
+  padding-top: 30px;
+  padding-bottom: 10px;
+  
 }
 
 
 
 /* Navbar container */
 .navbar {
-  display: flex;
+    display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #333;
+  background-color: #333333;
   padding: 10px;
   color: white;
 }
+
+/* .Role-container {
+  margin-left: 40px;
+  margin-right: 40px;
+} */
 
 /* Navbar left section */
 .navbar-left {
   display: flex;
   align-items: center;
+  margin-left: 550px;
 }
 
 /* Role toggle button */
 .role-toggle {
-  display: flex;
-  align-items: center;
-  margin-right: 20px; /* Adjust as needed */
+  background-color: #275dad;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-/* Role toggle switch */
-.role-toggle input[type="checkbox"] {
-  opacity: 0;
-  width: 0;
-  height: 0;
+.role-toggle:hover {
+  background-color: #a3d5ff;
 }
+
 
 /* Role toggle slider */
 .role-toggle .slider {
@@ -163,4 +168,55 @@ body {
 /* Navbar right section */
 .navbar-right {
   margin-left: auto;
+  margin-right: 550px;
+}
+
+
+.dropdown {
+  position: relative; /* Ensure the dropdown menu is positioned relative to this container */
+}
+
+.dropdown-toggle {
+  background-color: #275DAD; /* Role toggle button color */
+  color: white; /* Text color */
+  padding: 8px 16px; /* Adjust padding as needed */
+  border: none;
+  border-radius: 8px; /* Rounded corners */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.dropdown-toggle:hover {
+  background-color: #a3d5ff; /* Hover color */
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #275DAD; /* Background color */
+  border: 1px solid #275DAD; /* Border color */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow */
+  padding: 8px 0; /* Adjust padding as needed */
+  z-index: 999; /* Ensure it's above other elements */
+  margin-left: -90px;
+  width: 150px;
+  right: 0;
+}
+
+.dropdown-menu ul {
+  list-style-type: none; /* Remove default list styles */
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown-menu li {
+  padding: 8px 16px; /* Adjust padding as needed */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.dropdown-menu li:hover {
+  background-color: #a3d5ff; /* Hover color */
 }
