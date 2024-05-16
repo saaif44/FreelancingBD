@@ -17,14 +17,18 @@ const common_1 = require("@nestjs/common");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 const message_service_1 = require("./message.service");
 const create_message_dto_1 = require("./dto/create-message.dto");
+const app_gateway_1 = require("../app.gateway");
 let MessageController = class MessageController {
-    constructor(messageService) {
+    constructor(messageService, appGateway) {
         this.messageService = messageService;
+        this.appGateway = appGateway;
     }
     async createMessage(createMessageDto, request) {
         const decodedToken = request.user;
         const senderId = decodedToken.userId;
-        return this.messageService.createMessage(senderId, createMessageDto);
+        const message = await this.messageService.createMessage(senderId, createMessageDto);
+        this.appGateway.sendMessage(message);
+        return message;
     }
     async getSentMessages(request) {
         const decodedToken = request.user;
@@ -32,7 +36,7 @@ let MessageController = class MessageController {
         return this.messageService.getMessagesBySenderId(senderId);
     }
     async getReceivedMessages(id) {
-        const recipientId = parseInt(id);
+        const recipientId = parseInt(id, 10);
         return this.messageService.getMessagesByRecipientId(recipientId);
     }
 };
@@ -62,6 +66,7 @@ __decorate([
 exports.MessageController = MessageController = __decorate([
     (0, common_1.Controller)('messages'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
-    __metadata("design:paramtypes", [message_service_1.MessageService])
+    __metadata("design:paramtypes", [message_service_1.MessageService,
+        app_gateway_1.AppGateway])
 ], MessageController);
 //# sourceMappingURL=message.controller.js.map

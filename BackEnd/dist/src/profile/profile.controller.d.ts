@@ -75,6 +75,7 @@ export declare class ProfileController {
         avatarUrl: string;
     }>;
     getUserData(request: Request, UserDataDto: UserDataDto): Promise<{
+        id: number;
         username: string;
         email: string;
         password: string;
@@ -103,4 +104,20 @@ export declare class ProfileController {
             userId: number;
         };
     }>;
+    getAllUserData(): Promise<{
+        id: number;
+        username: string;
+        email: string;
+        password: string;
+        created_at: Date;
+        updated_at: Date;
+        role: import(".prisma/client").$Enums.RoleType;
+        balance: import("@prisma/client/runtime/library").Decimal;
+        language_known: string;
+        nationality: string;
+        address: string;
+        phone_number: string;
+        nid_number: string;
+        avatarUrl: string;
+    }[]>;
 }

@@ -45,5 +45,10 @@ export class ProfileController {
     }
 
 
+    @Get('allusers')
+  async getAllUserData() {
+    return this.profileService.getAllUserData();
+  }
+
 
 }

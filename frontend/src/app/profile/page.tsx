@@ -113,6 +113,7 @@ const Profile = () => {
     oldpassword: '',
     newpasswords: '',
     confirmpasswords: '',
+    id:'',
   });
   const [message, setMessage] = useState('');
 
@@ -253,6 +254,9 @@ const Profile = () => {
             </li>
             <li>
               <strong>Type:</strong> {userData.role}
+            </li>
+            <li>
+              <strong>Type:</strong> {userData.id}
             </li>
           </ul>
         )}

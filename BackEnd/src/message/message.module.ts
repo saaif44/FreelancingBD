@@ -5,6 +5,7 @@ import { MessageController } from './message.controller';
 import { MessageGateway } from './message.gateway';
 import { PrismaModule } from '../prisma/prisma.module';
 import { JwtModule } from '@nestjs/jwt';
+import { AppGateway } from 'src/app.gateway';
 
 @Module({
   imports: [ JwtModule.register({
@@ -12,7 +13,7 @@ import { JwtModule } from '@nestjs/jwt';
     signOptions: { expiresIn: '1d' },
   }) ,PrismaModule],
   controllers: [MessageController],
-  providers: [MessageService, MessageGateway],
+  providers: [AppGateway, MessageService, MessageGateway],
 })
 export class MessageModule {}
 

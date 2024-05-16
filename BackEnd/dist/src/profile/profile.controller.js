@@ -36,6 +36,9 @@ let ProfileController = class ProfileController {
         const userId = decodedToken.userId;
         return this.profileService.getUserData(userId, UserDataDto);
     }
+    async getAllUserData() {
+        return this.profileService.getAllUserData();
+    }
 };
 exports.ProfileController = ProfileController;
 __decorate([
@@ -62,6 +65,12 @@ __decorate([
     __metadata("design:paramtypes", [Object, profile_dto_1.UserDataDto]),
     __metadata("design:returntype", Promise)
 ], ProfileController.prototype, "getUserData", null);
+__decorate([
+    (0, common_1.Get)('allusers'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], ProfileController.prototype, "getAllUserData", null);
 exports.ProfileController = ProfileController = __decorate([
     (0, common_1.Controller)('profile'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),

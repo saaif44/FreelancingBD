@@ -74,6 +74,7 @@ export declare class ProfileService {
         avatarUrl: string;
     }>;
     getUserData(userId: any, data: UserDataDto): Promise<{
+        id: number;
         username: string;
         email: string;
         password: string;
@@ -102,4 +103,20 @@ export declare class ProfileService {
             userId: number;
         };
     }>;
+    getAllUserData(): Promise<{
+        id: number;
+        username: string;
+        email: string;
+        password: string;
+        created_at: Date;
+        updated_at: Date;
+        role: import(".prisma/client").$Enums.RoleType;
+        balance: import("@prisma/client/runtime/library").Decimal;
+        language_known: string;
+        nationality: string;
+        address: string;
+        phone_number: string;
+        nid_number: string;
+        avatarUrl: string;
+    }[]>;
 }

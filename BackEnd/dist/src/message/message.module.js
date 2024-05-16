@@ -13,6 +13,7 @@ const message_controller_1 = require("./message.controller");
 const message_gateway_1 = require("./message.gateway");
 const prisma_module_1 = require("../prisma/prisma.module");
 const jwt_1 = require("@nestjs/jwt");
+const app_gateway_1 = require("../app.gateway");
 let MessageModule = class MessageModule {
 };
 exports.MessageModule = MessageModule;
@@ -23,7 +24,7 @@ exports.MessageModule = MessageModule = __decorate([
                 signOptions: { expiresIn: '1d' },
             }), prisma_module_1.PrismaModule],
         controllers: [message_controller_1.MessageController],
-        providers: [message_service_1.MessageService, message_gateway_1.MessageGateway],
+        providers: [app_gateway_1.AppGateway, message_service_1.MessageService, message_gateway_1.MessageGateway],
     })
 ], MessageModule);
 //# sourceMappingURL=message.module.js.map

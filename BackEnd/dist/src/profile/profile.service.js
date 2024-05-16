@@ -66,8 +66,12 @@ let ProfileService = class ProfileService {
                 ClientProfile: true,
                 email: true,
                 password: true,
+                id: true,
             },
         });
+    }
+    async getAllUserData() {
+        return this.prisma.user.findMany({});
     }
 };
 exports.ProfileService = ProfileService;

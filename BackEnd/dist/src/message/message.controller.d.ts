@@ -1,9 +1,11 @@
 import { MessageService } from './message.service';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { Request } from 'express';
+import { AppGateway } from '../app.gateway';
 export declare class MessageController {
     private readonly messageService;
-    constructor(messageService: MessageService);
+    private readonly appGateway;
+    constructor(messageService: MessageService, appGateway: AppGateway);
     createMessage(createMessageDto: CreateMessageDto, request: Request): Promise<{
         id: number;
         content: string;

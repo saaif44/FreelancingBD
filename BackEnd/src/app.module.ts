@@ -18,6 +18,7 @@ import { TransactionModule } from './transaction/transaction.module';
 import { DashboardController } from './dashboard/dashboard.controller';
 import { DashboardService } from './dashboard/dashboard.service';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { AppGateway } from '../src/app.gateway';
 
 @Module({
   imports: [ FileModule, AuthModule, PrismaModule, UsersModule, ProfileModule, JwtModule.register({
@@ -25,7 +26,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
     signOptions: { expiresIn: '1d' },
   }), MessageModule, MulterModule.register(multerConfig), TransactionModule, DashboardModule,  ],
   controllers: [ FileController, TransactionController, DashboardController, ],
-  providers: [ FileUploadService, TransactionService, DashboardService],
+  providers: [ AppGateway, FileUploadService, TransactionService, DashboardService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

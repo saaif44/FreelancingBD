@@ -26,4 +26,5 @@ export declare class UserDataDto {
     phone_number: string;
     balance: number;
     password: string;
+    id: number;
 }

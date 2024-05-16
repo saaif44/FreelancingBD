@@ -26,6 +26,7 @@ const transaction_module_1 = require("./transaction/transaction.module");
 const dashboard_controller_1 = require("./dashboard/dashboard.controller");
 const dashboard_service_1 = require("./dashboard/dashboard.service");
 const dashboard_module_1 = require("./dashboard/dashboard.module");
+const app_gateway_1 = require("../src/app.gateway");
 let AppModule = class AppModule {
     configure(consumer) {
         consumer
@@ -41,7 +42,7 @@ exports.AppModule = AppModule = __decorate([
                 signOptions: { expiresIn: '1d' },
             }), message_module_1.MessageModule, platform_express_1.MulterModule.register(multer_config_1.multerConfig), transaction_module_1.TransactionModule, dashboard_module_1.DashboardModule,],
         controllers: [file_controller_1.FileController, transaction_controller_1.TransactionController, dashboard_controller_1.DashboardController,],
-        providers: [file_upload_service_1.FileUploadService, transaction_service_1.TransactionService, dashboard_service_1.DashboardService],
+        providers: [app_gateway_1.AppGateway, file_upload_service_1.FileUploadService, transaction_service_1.TransactionService, dashboard_service_1.DashboardService],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map
