@@ -12,4 +12,5 @@ export declare class AuthService {
         accessToken: string;
     }>;
     validateUser(userId: number): Promise<User>;
+    verifyPassword(password: string, userId: number): Promise<boolean>;
 }

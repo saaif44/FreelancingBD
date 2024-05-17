@@ -34,11 +34,8 @@ export class EditProfileDto {
   @IsNotEmpty()
   name: string;
 
-  @IsString()
-  language_known: string;
-
-  @IsString()
-  nationality: string;
+  @IsEmail()
+  email: string;
 
   @IsString()
   address: string;
@@ -47,13 +44,13 @@ export class EditProfileDto {
   phone_number: string;
 
   @IsString()
-  password: string;
+  nationality: string;
 
+  @IsString()
+  language_known: string;
 
-  @IsEmail()
-  email: string;
-
-  
+  // @IsString()
+  // password: string;
 
 }
 

@@ -53,13 +53,9 @@ __decorate([
     __metadata("design:type", String)
 ], EditProfileDto.prototype, "name", void 0);
 __decorate([
-    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsEmail)(),
     __metadata("design:type", String)
-], EditProfileDto.prototype, "language_known", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], EditProfileDto.prototype, "nationality", void 0);
+], EditProfileDto.prototype, "email", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
@@ -71,11 +67,11 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], EditProfileDto.prototype, "password", void 0);
+], EditProfileDto.prototype, "nationality", void 0);
 __decorate([
-    (0, class_validator_1.IsEmail)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], EditProfileDto.prototype, "email", void 0);
+], EditProfileDto.prototype, "language_known", void 0);
 class UserDataDto {
 }
 exports.UserDataDto = UserDataDto;

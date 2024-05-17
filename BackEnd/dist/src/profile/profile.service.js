@@ -35,10 +35,9 @@ let ProfileService = class ProfileService {
     }
     async editProfile(userId, id, data) {
         return this.prisma.user.update({
-            where: { id: id },
+            where: { id: userId },
             data: {
                 username: data.name,
-                password: data.password,
                 language_known: data.language_known,
                 nationality: data.nationality,
                 address: data.address,

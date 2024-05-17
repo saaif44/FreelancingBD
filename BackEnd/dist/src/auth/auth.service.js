@@ -40,10 +40,10 @@ let AuthService = class AuthService {
         const { email, password } = signinDto;
         const user = await this.prisma.user.findUnique({ where: { email } });
         if (!user) {
-            throw new Error('User not found');
+            throw new common_1.HttpException('User not found', common_1.HttpStatus.NOT_FOUND);
         }
         if (user.password !== password) {
-            throw new Error('Invalid credentials');
+            throw new common_1.HttpException('Invalid credentials', common_1.HttpStatus.UNAUTHORIZED);
         }
         const payload = { userId: user.id, email: user.email };
         const accessToken = this.jwtService.sign(payload);
@@ -52,6 +52,13 @@ let AuthService = class AuthService {
     async validateUser(userId) {
         const user = await this.prisma.user.findUnique({ where: { id: userId } });
         return user;
+    }
+    async verifyPassword(password, userId) {
+        const user = await this.prisma.user.findUnique({ where: { id: userId } });
+        if (!user) {
+            throw new common_1.HttpException('User not found', common_1.HttpStatus.NOT_FOUND);
+        }
+        return user.password === password;
     }
 };
 exports.AuthService = AuthService;

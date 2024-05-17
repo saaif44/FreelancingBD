@@ -1,5 +1,5 @@
 // auth.service.ts
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
 import { SignupDto } from './dto/signup.dto';
@@ -41,12 +41,12 @@ export class AuthService {
     const user = await this.prisma.user.findUnique({ where: { email } });
 
     if (!user) {
-      throw new Error('User not found');
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
 
     //validate password
     if (user.password !== password) {
-      throw new Error('Invalid credentials');
+      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
 
     //generate JWT token
@@ -61,4 +61,21 @@ export class AuthService {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
     return user;
   }
+
+
+  async verifyPassword(password: string, userId: number): Promise<boolean> {
+    // Find the user by ID
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    // Validate password
+    return user.password === password;
+  }
+
+  
+
+
 }

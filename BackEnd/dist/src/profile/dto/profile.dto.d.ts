@@ -9,12 +9,11 @@ export declare class CreateProfileDto {
 }
 export declare class EditProfileDto {
     name: string;
-    language_known: string;
-    nationality: string;
+    email: string;
     address: string;
     phone_number: string;
-    password: string;
-    email: string;
+    nationality: string;
+    language_known: string;
 }
 export declare class UserDataDto {
     username: string;

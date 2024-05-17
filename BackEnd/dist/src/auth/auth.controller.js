@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
 const signup_dto_1 = require("./dto/signup.dto");
 const signin_dto_1 = require("./dto/signin.dto");
+const jwt_auth_guard_1 = require("./guards/jwt-auth.guard");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -25,7 +26,26 @@ let AuthController = class AuthController {
         return this.authService.signup(signupDto);
     }
     async signin(signinDto) {
-        return this.authService.signin(signinDto);
+        try {
+            return this.authService.signin(signinDto);
+        }
+        catch (error) {
+            if (error.status === common_1.HttpStatus.NOT_FOUND || error.status === common_1.HttpStatus.UNAUTHORIZED) {
+                throw new common_1.HttpException(error.message, error.status);
+            }
+            throw new common_1.HttpException('Failed to sign in. Please try again later.', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    async verifyPassword(body, req) {
+        const decodedToken = req.user;
+        const userId = decodedToken.userId;
+        try {
+            const isValid = await this.authService.verifyPassword(body.password, userId);
+            return { valid: isValid };
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, error.status);
+        }
     }
 };
 exports.AuthController = AuthController;
@@ -43,6 +63,15 @@ __decorate([
     __metadata("design:paramtypes", [signin_dto_1.SigninDto]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "signin", null);
+__decorate([
+    (0, common_1.Post)('verify-password'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "verifyPassword", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

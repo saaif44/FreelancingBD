@@ -87,7 +87,15 @@ const SigninForm = () => {
         console.error('Response data:', error.response.data);
         console.error('Response status:', error.response.status);
         console.error('Response headers:', error.response.headers);
-        setErrorMessage('Failed to sign in. Please try again later.');
+        // setErrorMessage('Failed to sign in. Please try again later.');
+        if(error.response.status === 401){
+          setErrorMessage('Invalid credentials. Please try again.');
+        } else if(error.response.status === 404){
+          setErrorMessage('User not found. Please try again.');
+        } else {
+          setErrorMessage('Failed to sign in. Please try again later.');
+        }
+        
       } else if (error.request) {
         console.error('No response received:', error.request);
         setErrorMessage('No response received from the server. Please check your network connection.');
@@ -97,23 +105,6 @@ const SigninForm = () => {
       }
     }
 
-    // useEffect(() => {
-    //   const fetchUserProfile = async () => {
-    //     try {
-    //       const response = await axios.get('http://localhost:4000/profile/user', {
-    //         headers: {
-    //           Authorization: `Bearer ${authToken}`
-    //         }
-    //       });
-    //       if (response.data.role && (response.data.role.toLowerCase() === 'admin')) {
-    //         setAdmin(true);
-    //       }
-    //     } catch (error) {
-    //       console.error('Error fetching user profile:', error);
-    //     }
-    //   };
-    //   fetchUserProfile();
-    // }, []);
 
   };
 

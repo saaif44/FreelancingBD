@@ -74,16 +74,16 @@ export declare class ProfileService {
         avatarUrl: string;
     }>;
     getUserData(userId: number, data: UserDataDto): Promise<{
-        id: number;
-        username: string;
-        email: string;
-        password: string;
         role: import(".prisma/client").$Enums.RoleType;
-        balance: import("@prisma/client/runtime/library").Decimal;
         language_known: string;
         nationality: string;
         address: string;
+        email: string;
         phone_number: string;
+        username: string;
+        balance: import("@prisma/client/runtime/library").Decimal;
+        password: string;
+        id: number;
         FreelancerProfile: {
             id: number;
             review: string;

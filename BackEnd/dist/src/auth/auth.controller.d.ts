@@ -1,6 +1,7 @@
 import { AuthService } from './auth.service';
 import { SignupDto } from './dto/signup.dto';
 import { SigninDto } from './dto/signin.dto';
+import { Request } from 'express';
 export declare class AuthController {
     private readonly authService;
     constructor(authService: AuthService);
@@ -22,5 +23,10 @@ export declare class AuthController {
     }>;
     signin(signinDto: SigninDto): Promise<{
         accessToken: string;
+    }>;
+    verifyPassword(body: {
+        password: string;
+    }, req: Request): Promise<{
+        valid: boolean;
     }>;
 }

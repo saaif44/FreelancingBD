@@ -28,10 +28,10 @@ export class ProfileService {
 
     async editProfile(userId: number, id: number, data: EditProfileDto) {
         return this.prisma.user.update({
-            where: { id: id }, // Use the id parameter to identify the user to update
+            where: { id: userId }, // Use the id parameter to identify the user to update
             data: {
                 username: data.name,
-                password: data.password,
+                // password: data.password,
                 language_known: data.language_known,
                 nationality: data.nationality,
                 address: data.address,

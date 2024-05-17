@@ -48,6 +48,14 @@ const profileOptions = [
       handleLogout();
     },
   },
+  {
+    label: 'Messages',
+    onClick: () => {
+      console.log('Messages clicked');
+      window.location.href = '/admin/createUser';
+    },
+  },
+  
 ];
   
 
