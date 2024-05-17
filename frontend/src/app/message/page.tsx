@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import io from 'socket.io-client';
+import Navbar from '../service/Navbar';
 
 const ComposeMessageForm = () => {
   const [content, setContent] = useState('');
@@ -19,65 +20,65 @@ const ComposeMessageForm = () => {
   const [logouts, setLogouts] = useState(false);
 
 
-  const profileOptions = [
+  // const profileOptions = [
 
-    {
-        label: 'Dashboard',
-        onClick: () => {
-            console.log('dashboard clicked');
-            window.location.href = '/dashboard';
-        },
-      },
-    {
-      label: 'Profile',
-      onClick: () => {
-        console.log('Profile clicked');
-        window.location.href = '/profile';
-      },
-    },
-    {
-      label: 'Messages',
-      onClick: () => {
-        console.log('Messages clicked');
-        window.location.href = '/message';
-      },
-    },
-    {
-    label: 'Balance',
-    onClick: () => {
-        console.log('Balance clicked');
-        window.location.href = '/transaction';
-    },
-  },
+  //   {
+  //       label: 'Dashboard',
+  //       onClick: () => {
+  //           console.log('dashboard clicked');
+  //           window.location.href = '/dashboard';
+  //       },
+  //     },
+  //   {
+  //     label: 'Profile',
+  //     onClick: () => {
+  //       console.log('Profile clicked');
+  //       window.location.href = '/profile';
+  //     },
+  //   },
+  //   {
+  //     label: 'Messages',
+  //     onClick: () => {
+  //       console.log('Messages clicked');
+  //       window.location.href = '/message';
+  //     },
+  //   },
+  //   {
+  //   label: 'Balance',
+  //   onClick: () => {
+  //       console.log('Balance clicked');
+  //       window.location.href = '/transaction';
+  //   },
+  // },
   
-    {
-      label: 'Logout',
-      onClick: () => {
-        handleLogout();
-      },
-    },
-  ];
+  //   {
+  //     label: 'Logout',
+  //     onClick: () => {
+  //       handleLogout();
+  //     },
+  //   },
+  // ];
     
   
-    const toggleDropdown = () => {
-      setIsOpen(!isOpen);
-    };
+  //   const toggleDropdown = () => {
+  //     setIsOpen(!isOpen);
+  //   };
   
 
 
-    if (logouts) {
-        Cookies.remove('accessToken');
-        window.location.href='/signin';
-         }
+  //   if (logouts) {
+  //       Cookies.remove('accessToken');
+  //       window.location.href='/signin';
+  //        }
 
          
-  const handleLogout = async () => {
-    try {
-        setLogouts(true);
-            } catch (error) {
-      console.error('Error logging out:', error);
-    }
-  };
+  // const handleLogout = async () => {
+  //   try {
+  //       setLogouts(true);
+  //           } catch (error) {
+  //     console.error('Error logging out:', error);
+  //   }
+  // };
 
 
   useEffect(() => {
@@ -162,11 +163,16 @@ const ComposeMessageForm = () => {
 
     
 
+    <div> <Navbar/> 
+
+
+
 
     <div className="container">
 
 
-<div className="dropdown"  style={{ position: 'absolute', top: '10px', right: '800px' }}>
+
+{/* <div className="dropdown"  style={{ position: 'absolute', top: '10px', right: '800px' }}>
 <button className="dropdown-toggle" onClick={toggleDropdown}>
 {profileData && profileData.username ? profileData.username : 'Menu'}
 </button>
@@ -182,7 +188,7 @@ const ComposeMessageForm = () => {
   </ul>
 </div>
 )}
-</div>
+</div> */}
 
 
 
@@ -228,6 +234,7 @@ const ComposeMessageForm = () => {
           </form>
         </div>
       )}
+    </div>
     </div>
   );
 };

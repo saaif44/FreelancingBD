@@ -2,12 +2,14 @@
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import Navbar from '../service/Navbar';
 
 const Profile = () => {
   const [userData, setUserData] = useState({});
   const authToken = Cookies.get('accessToken');
   const [message, setMessage] = useState('');
   const [activeTab, setActiveTab] = useState('personalInfo');
+
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -42,9 +44,12 @@ const Profile = () => {
   };
 
   return (
+    <div><Navbar />
     <div className="flex h-screen">
+      
       <div className="w-1/4 bg-[#275DAD] p-4">
-        <h2 className="text-lg font-semibold mb-4">User Profile</h2>
+        <h2 className="text-lg font-semibold pt-100 mb-4">User Profile</h2>
+
         <hr />
         {userData && (
           <ul>
@@ -71,7 +76,8 @@ const Profile = () => {
       </div>
       <div className="flex-1 p-4">
         <div className="tabs">
-          <button
+
+          <button 
             className={`tab ${activeTab === 'personalInfo' ? 'active' : ''}`}
             onClick={() => handleTabChange('personalInfo')}
           >
@@ -80,16 +86,21 @@ const Profile = () => {
           <button
             className={`tab ${activeTab === 'changePassword' ? 'active' : ''}`}
             onClick={() => handleTabChange('changePassword')}
+            // style={{ background: '#275DAD' , color: 'white' , border: 'none', padding: '10px 20px', borderRadius: '5px' , margin: '10px 0' , }}
           >
             Change Password
-          </button>
+          </button>   
+          
         </div>
         <div className="tab-content">
           {activeTab === 'personalInfo' && <PersonalInfoForm userData authToken={authToken} />}
           {activeTab === 'changePassword' && <ChangePasswordForm authToken={authToken} />}
+        
         </div>
-        <div>{message}</div>
+        <div>{message} </div> 
       </div>
+      
+    </div>
     </div>
   );
 };

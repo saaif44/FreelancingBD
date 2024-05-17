@@ -309,3 +309,28 @@ body {
 .send-button:hover {
   background-color: #1c4d8c;
 }
+
+.tab {
+  background: #275DAD;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-right: 50px;
+}
+
+.tab:hover {
+  background-color: #1c4d8c;
+}
+
+  /* Add styles for active tab if needed */
+.active {
+  font-weight: bold;
+}
+
+
+
+

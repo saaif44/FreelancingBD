@@ -1,25 +1,21 @@
 // Navbar.js
-import React from 'react';
-import ProfileDropdown from './ProfileDropdown';
+import React, { useState } from 'react';
+import ProfileDropdown from './dropdown';
 
 const Navbar = ({ profileData }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <nav className="navbar">
-      <div className="navbar-left">
-        <RoleToggle />
-        {profileData && <p style={{ marginLeft: '10px', color: 'lightgray', fontFamily: "arial", fontSize: '11' }}>{profileData.role}</p>}
-      </div>
       <div className="navbar-right">
-        <ProfileDropdown profileData={profileData} />
+      <ProfileDropdown/>
       </div>
     </nav>
   );
 };
-
-return(
-
-    <ProfileDropdown/>
-
-);
 
 export default Navbar;
