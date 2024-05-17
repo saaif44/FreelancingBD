@@ -1,7 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException , HttpException, HttpStatus } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateProfileDto , EditProfileDto, UserDataDto,  updateUserDto } from './dto/profile.dto';
-import { RoleType } from '@prisma/client';
+import { RoleType, Prisma } from '@prisma/client';
 
 @Injectable()
 export class ProfileService {
@@ -27,22 +27,35 @@ export class ProfileService {
     }
 
     async editProfile(userId: number, id: number, data: EditProfileDto) {
-        return this.prisma.user.update({
-            where: { id: userId }, // Use the id parameter to identify the user to update
-            data: {
-                username: data.name,
-                // password: data.password,
-                language_known: data.language_known,
-                nationality: data.nationality,
-                address: data.address,
-                phone_number: data.phone_number,
-                email: data.email,
-            },
-            include: {
-                FreelancerProfile: true,
-                ClientProfile: true,
-            },
+      try {
+        return await this.prisma.user.update({
+          where: { id: userId }, // Use the id parameter to identify the user to update
+          data: {
+            username: data.name,
+            language_known: data.language_known,
+            nationality: data.nationality,
+            address: data.address,
+            phone_number: data.phone_number,
+            email: data.email,
+          },
+          include: {
+            FreelancerProfile: true,
+            ClientProfile: true,
+          },
         });
+      } catch (error) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+          if (error.code === 'P2002') {
+            const target = error.meta?.target as string[]; // Assert type to string array
+            if (target.includes('email')) {
+              throw new HttpException('Email already exists', HttpStatus.CONFLICT);
+            } else if (target.includes('phone_number')) {
+              throw new HttpException('Phone number already exists', HttpStatus.CONFLICT);
+            }
+          }
+        }
+        throw new HttpException('Something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+      }
     }
 
     async getUserData(userId: number, data: UserDataDto) {

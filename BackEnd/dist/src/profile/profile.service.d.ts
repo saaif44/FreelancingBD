@@ -1,5 +1,6 @@
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateProfileDto, EditProfileDto, UserDataDto, updateUserDto } from './dto/profile.dto';
+import { Prisma } from '@prisma/client';
 export declare class ProfileService {
     private prisma;
     constructor(prisma: PrismaService);
@@ -8,7 +9,7 @@ export declare class ProfileService {
             id: number;
             review: string;
             ratings: number;
-            hourly_rate: import("@prisma/client/runtime/library").Decimal;
+            hourly_rate: Prisma.Decimal;
             completed_jobs: number;
             created_services: number;
             active_jobs: number;
@@ -18,7 +19,7 @@ export declare class ProfileService {
             id: number;
             review: string;
             ratings: number;
-            avg_budget: import("@prisma/client/runtime/library").Decimal;
+            avg_budget: Prisma.Decimal;
             created_jobs: number;
             userId: number;
         };
@@ -30,7 +31,7 @@ export declare class ProfileService {
         created_at: Date;
         updated_at: Date;
         role: import(".prisma/client").$Enums.RoleType;
-        balance: import("@prisma/client/runtime/library").Decimal;
+        balance: Prisma.Decimal;
         language_known: string;
         nationality: string;
         address: string;
@@ -43,7 +44,7 @@ export declare class ProfileService {
             id: number;
             review: string;
             ratings: number;
-            hourly_rate: import("@prisma/client/runtime/library").Decimal;
+            hourly_rate: Prisma.Decimal;
             completed_jobs: number;
             created_services: number;
             active_jobs: number;
@@ -53,7 +54,7 @@ export declare class ProfileService {
             id: number;
             review: string;
             ratings: number;
-            avg_budget: import("@prisma/client/runtime/library").Decimal;
+            avg_budget: Prisma.Decimal;
             created_jobs: number;
             userId: number;
         };
@@ -65,7 +66,7 @@ export declare class ProfileService {
         created_at: Date;
         updated_at: Date;
         role: import(".prisma/client").$Enums.RoleType;
-        balance: import("@prisma/client/runtime/library").Decimal;
+        balance: Prisma.Decimal;
         language_known: string;
         nationality: string;
         address: string;
@@ -74,21 +75,21 @@ export declare class ProfileService {
         avatarUrl: string;
     }>;
     getUserData(userId: number, data: UserDataDto): Promise<{
+        id: number;
+        username: string;
+        email: string;
+        password: string;
         role: import(".prisma/client").$Enums.RoleType;
+        balance: Prisma.Decimal;
         language_known: string;
         nationality: string;
         address: string;
-        email: string;
         phone_number: string;
-        username: string;
-        balance: import("@prisma/client/runtime/library").Decimal;
-        password: string;
-        id: number;
         FreelancerProfile: {
             id: number;
             review: string;
             ratings: number;
-            hourly_rate: import("@prisma/client/runtime/library").Decimal;
+            hourly_rate: Prisma.Decimal;
             completed_jobs: number;
             created_services: number;
             active_jobs: number;
@@ -98,7 +99,7 @@ export declare class ProfileService {
             id: number;
             review: string;
             ratings: number;
-            avg_budget: import("@prisma/client/runtime/library").Decimal;
+            avg_budget: Prisma.Decimal;
             created_jobs: number;
             userId: number;
         };
@@ -111,7 +112,7 @@ export declare class ProfileService {
         created_at: Date;
         updated_at: Date;
         role: import(".prisma/client").$Enums.RoleType;
-        balance: import("@prisma/client/runtime/library").Decimal;
+        balance: Prisma.Decimal;
         language_known: string;
         nationality: string;
         address: string;

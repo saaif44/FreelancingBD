@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProfileService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
+const client_1 = require("@prisma/client");
 let ProfileService = class ProfileService {
     constructor(prisma) {
         this.prisma = prisma;
@@ -34,21 +35,37 @@ let ProfileService = class ProfileService {
         });
     }
     async editProfile(userId, id, data) {
-        return this.prisma.user.update({
-            where: { id: userId },
-            data: {
-                username: data.name,
-                language_known: data.language_known,
-                nationality: data.nationality,
-                address: data.address,
-                phone_number: data.phone_number,
-                email: data.email,
-            },
-            include: {
-                FreelancerProfile: true,
-                ClientProfile: true,
-            },
-        });
+        try {
+            return await this.prisma.user.update({
+                where: { id: userId },
+                data: {
+                    username: data.name,
+                    language_known: data.language_known,
+                    nationality: data.nationality,
+                    address: data.address,
+                    phone_number: data.phone_number,
+                    email: data.email,
+                },
+                include: {
+                    FreelancerProfile: true,
+                    ClientProfile: true,
+                },
+            });
+        }
+        catch (error) {
+            if (error instanceof client_1.Prisma.PrismaClientKnownRequestError) {
+                if (error.code === 'P2002') {
+                    const target = error.meta?.target;
+                    if (target.includes('email')) {
+                        throw new common_1.HttpException('Email already exists', common_1.HttpStatus.CONFLICT);
+                    }
+                    else if (target.includes('phone_number')) {
+                        throw new common_1.HttpException('Phone number already exists', common_1.HttpStatus.CONFLICT);
+                    }
+                }
+            }
+            throw new common_1.HttpException('Something went wrong', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     async getUserData(userId, data) {
         return this.prisma.user.findUnique({

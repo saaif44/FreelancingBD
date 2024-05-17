@@ -27,7 +27,18 @@ const Profile = () => {
   }, [authToken]);
 
   const handleTabChange = (tab) => {
-    setActiveTab(tab);
+        setActiveTab(tab);
+        if (tab === 'personalInfo') {
+          ({
+            name: '',
+            email: '',
+            address: '',
+            phone_number: '',
+            nationality: '',
+            language_known: '',
+            password: '',
+          });
+        }
   };
 
   return (
@@ -74,7 +85,7 @@ const Profile = () => {
           </button>
         </div>
         <div className="tab-content">
-          {activeTab === 'personalInfo' && <PersonalInfoForm userData={userData} authToken={authToken} />}
+          {activeTab === 'personalInfo' && <PersonalInfoForm userData authToken={authToken} />}
           {activeTab === 'changePassword' && <ChangePasswordForm authToken={authToken} />}
         </div>
         <div>{message}</div>
@@ -154,7 +165,11 @@ const PersonalInfoForm = ({ userData, authToken }) => {
       }
       
     } catch (error) {
-      setMessage('Error updating profile: ' + error.message);
+      if (error.response && error.response.status === 409) {
+        setMessage(error.response.data.message);
+      } else {
+        setMessage('Error updating profile: ' + error.message);
+      }
     }
   };
 
@@ -261,10 +276,44 @@ const ChangePasswordForm = ({ authToken }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.newpassword !== formData.confirmpassword) {
-      setMessage('Passwords do not match');
-      return;
+
+    if(formData.oldpassword === '') {
+      setMessage('Old password cannot be empty');
     }
+     
+      try {
+        // Verify password
+        const response = await axios.post(
+          'http://localhost:4000/auth/verify-password',
+          { password: formData.oldpassword},
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
+
+
+        if (response.status === 201) {
+          // Password is correct, proceed with updating profile
+          if(response.data.valid === true) {
+
+            if(formData.oldpassword === formData.newpassword) {
+              setMessage('New password cannot be the same as the old password');
+              return;
+            }
+            else if (formData.newpassword !== formData.confirmpassword) {
+              setMessage('Confirm Passwords do not match');
+              return;
+            }
+            else if(formData.newpassword.length < 8) {
+              setMessage('Password must be at least 8 characters long');
+              return;
+            }
+            
+
+
     try {
       const response = await axios.put('http://localhost:4000/profile/change-password', formData, {
         headers: {
@@ -280,7 +329,22 @@ const ChangePasswordForm = ({ authToken }) => {
     } catch (error) {
       setMessage('Error updating password: ' + error.message);
     }
-  };
+  
+  }
+}
+      } catch (error) {
+        if (error.response && error.response.status === 409) {
+          setMessage(error.response.data.message);
+        } else {
+          setMessage('Error updating profile: ' + error.message);
+        }
+      }
+    };
+    
+
+
+ 
+  
 
   return (
     <form onSubmit={handleSubmit}>
@@ -289,7 +353,7 @@ const ChangePasswordForm = ({ authToken }) => {
         <li className="mb-2">
           <input
             onChange={handleChange}
-            type="password"
+            type="string"
             name="oldpassword"
             placeholder="Old Password"
             value={formData.oldpassword}
@@ -299,7 +363,7 @@ const ChangePasswordForm = ({ authToken }) => {
         <li className="mb-2">
           <input
             onChange={handleChange}
-            type="password"
+            type="string"
             name="newpassword"
             placeholder="New Password"
             value={formData.newpassword}
@@ -309,7 +373,7 @@ const ChangePasswordForm = ({ authToken }) => {
         <li className="mb-2">
           <input
             onChange={handleChange}
-            type="password"
+            type="string"
             name="confirmpassword"
             placeholder="Confirm Password"
             value={formData.confirmpassword}
