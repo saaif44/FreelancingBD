@@ -50,4 +50,49 @@ export class MessageService {
       },
     });
   }
+
+  // async getUsersMessagedByUserId(userId: number) {
+  //   const sentMessages = await this.prisma.message.findMany({
+  //     where: { senderId: userId },
+  //     select: { recipientId: true },
+  //   });
+
+  //   const receivedMessages = await this.prisma.message.findMany({
+  //     where: { recipientId: userId },
+  //     select: { senderId: true },
+  //   });
+
+  //   const userIds = [
+  //     ...new Set([
+  //       ...sentMessages.map((message) => message.recipientId),
+  //       ...receivedMessages.map((message) => message.senderId),
+  //     ]),
+  //   ];
+
+  //   // Fetch user details based on user IDs
+  //   const users = await this.prisma.user.findMany({
+  //     where: { id: { in: userIds } },
+  //   });
+
+  //   return users;
+  // }
+
+  async getUsersReceivedMessages(userId: number) {
+    const receivedMessages = await this.prisma.message.findMany({
+      where: { senderId: userId },
+      select: { recipientId: true },
+    });
+
+    const userIds = [
+      ...new Set(receivedMessages.map((message) => message.recipientId)),
+    ];
+
+    // Fetch user details based on user IDs
+    const users = await this.prisma.user.findMany({
+      where: { id: { in: userIds } },
+    });
+
+    return users;
+  }
+
 }

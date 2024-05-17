@@ -49,6 +49,19 @@ let MessageService = class MessageService {
             },
         });
     }
+    async getUsersReceivedMessages(userId) {
+        const receivedMessages = await this.prisma.message.findMany({
+            where: { senderId: userId },
+            select: { recipientId: true },
+        });
+        const userIds = [
+            ...new Set(receivedMessages.map((message) => message.recipientId)),
+        ];
+        const users = await this.prisma.user.findMany({
+            where: { id: { in: userIds } },
+        });
+        return users;
+    }
 };
 exports.MessageService = MessageService;
 exports.MessageService = MessageService = __decorate([

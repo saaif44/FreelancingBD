@@ -13,11 +13,11 @@ exports.AppGateway = void 0;
 const websockets_1 = require("@nestjs/websockets");
 const socket_io_1 = require("socket.io");
 let AppGateway = class AppGateway {
-    handleConnection(client, ...args) {
-        console.log('Client connected');
+    handleConnection(client) {
+        console.log('Client connected:', client.id);
     }
     handleDisconnect(client) {
-        console.log('Client disconnected');
+        console.log('Client disconnected:', client.id);
     }
     sendMessage(message) {
         this.server.emit('newMessage', message);
@@ -29,6 +29,12 @@ __decorate([
     __metadata("design:type", socket_io_1.Server)
 ], AppGateway.prototype, "server", void 0);
 exports.AppGateway = AppGateway = __decorate([
-    (0, websockets_1.WebSocketGateway)()
+    (0, websockets_1.WebSocketGateway)({
+        cors: {
+            origin: 'http://localhost:3000',
+            methods: ['GET', 'POST'],
+            credentials: true,
+        },
+    })
 ], AppGateway);
 //# sourceMappingURL=app.gateway.js.map

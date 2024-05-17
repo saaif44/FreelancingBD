@@ -36,4 +36,20 @@ export declare class MessageController {
         senderName: string;
         recipientName: string;
     }[]>;
+    getUsersReceived(request: Request): Promise<{
+        id: number;
+        username: string;
+        email: string;
+        password: string;
+        created_at: Date;
+        updated_at: Date;
+        role: import(".prisma/client").$Enums.RoleType;
+        balance: import("@prisma/client/runtime/library").Decimal;
+        language_known: string;
+        nationality: string;
+        address: string;
+        phone_number: string;
+        nid_number: string;
+        avatarUrl: string;
+    }[]>;
 }

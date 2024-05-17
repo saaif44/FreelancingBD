@@ -36,7 +36,21 @@ export class MessageController {
 
   @Get(':id/received')
   async getReceivedMessages(@Param('id') id: string) {
-    const recipientId = parseInt(id, 10); // Parse ID string to number
+    const recipientId = parseInt(id); // Parse ID string to number
     return this.messageService.getMessagesByRecipientId(recipientId);
   }
+
+  // @Get('users')
+  // async getUsersMessaged(@Req() request: Request) {
+  //   const decodedToken = request.user as DecodedToken;
+  //   const userId = decodedToken.userId;
+  //   return this.messageService.getUsersMessagedByUserId(userId);
+  // }
+  @Get('received-users')
+  async getUsersReceived(@Req() request: Request) {
+    const decodedToken = request.user as DecodedToken;
+    const userId = decodedToken.userId;
+    return this.messageService.getUsersReceivedMessages(userId);
+  }
+
 }
