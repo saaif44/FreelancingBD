@@ -7,3 +7,7 @@ export class ChangeRoleDto {
   @IsEnum(RoleType)
   newRole: RoleType;
 }
+
+export class servicesDto{
+  
+}

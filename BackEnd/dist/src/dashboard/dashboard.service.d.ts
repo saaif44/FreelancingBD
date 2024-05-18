@@ -21,9 +21,9 @@ export declare class DashboardService {
         id: number;
         title: string;
         description: string;
-        standard_offer: import("@prisma/client/runtime/library").Decimal;
-        premium_offer: import("@prisma/client/runtime/library").Decimal;
-        butter_offer: import("@prisma/client/runtime/library").Decimal;
+        standard_offer: number;
+        premium_offer: number;
+        butter_offer: number;
         freelancer_profile_id: number;
     }[]>;
     changeUserRole(userId: number, newRole: RoleType): Promise<void>;

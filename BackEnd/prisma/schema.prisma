@@ -125,15 +125,18 @@ recipientId  Int?
   //  one-to-one relationship with recipient
   recipient    User?    @relation(name: "FileRecievedUser", fields: [recipientId], references: [id])
 
+  jobFileId       Int
+  job_file       Job @relation(fields: [jobFileId], references: [id])
+
 }
 
 model Service {
   id                 Int      @id @default(autoincrement())
-  title              String
-  description        String
-  standard_offer     Decimal
-  premium_offer      Decimal
-  butter_offer       Decimal
+  title              String?
+  description        String?
+  standard_offer     Int?
+  premium_offer      Int?
+  butter_offer       Int?
   freelancer_profile_id Int?
   FreelancerProfile FreelancerProfile? @relation(fields: [freelancer_profile_id], references: [id])
   file File[]
@@ -154,19 +157,30 @@ model Job {
   client_profile_id    Int?
   freelancer_profile_id Int?
   payslip             Payslip?
+  file File[]
+  bids Bid[]
+
+
+@@map("jobs")
+
 }
 
 model Bid {
   id                   Int      @id @default(autoincrement())
-  description          String
-  attachment           String
-  offer_time           Int
-  offer_rate           Decimal
+  description          String?
+  attachment           String?
+  offer_time           Int?
+  offer_rate           Decimal?
   created_at           DateTime @default(now())
   updated_at           DateTime @updatedAt
-  freelancer_profile_id Int
+  freelancer_profile_id Int @unique
   FreelancerProfile FreelancerProfile @relation(fields: [freelancer_profile_id], references: [id])
   file File[]
+  jobId               Int
+  job Job? @relation(fields: [jobId], references: [id])
+
+  @@map("bids")
+
 }
 
 model Transaction {

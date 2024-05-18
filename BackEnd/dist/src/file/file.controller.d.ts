@@ -16,6 +16,7 @@ export declare class FileController {
         serviceId: number;
         senderId: number;
         recipientId: number;
+        jobFileId: number;
     } | {
         message: string;
         filename: string;

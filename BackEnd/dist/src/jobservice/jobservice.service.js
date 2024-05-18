@@ -27,8 +27,39 @@ let JobService = class JobService {
         });
     }
     async createBid(createBidDto) {
+        const { description, attachment, offer_time, offer_rate, userId, jobId } = createBidDto;
+        const freelancerProfile = await this.prisma.freelancerProfile.findUnique({
+            where: { userId: userId },
+        });
+        if (!freelancerProfile) {
+            throw new Error('FreelancerProfile with the specified userId does not exist');
+        }
+        const existingBid = await this.prisma.bid.findFirst({
+            where: {
+                freelancer_profile_id: freelancerProfile.userId,
+                jobId: jobId,
+            },
+        });
+        if (existingBid) {
+            throw new common_1.BadRequestException('You have already made a bid for this job.');
+        }
         return this.prisma.bid.create({
-            data: createBidDto,
+            data: {
+                description,
+                attachment,
+                offer_time,
+                offer_rate,
+                FreelancerProfile: {
+                    connect: {
+                        id: freelancerProfile.id,
+                    },
+                },
+                job: {
+                    connect: {
+                        id: jobId,
+                    },
+                },
+            },
         });
     }
     async updateBid(id, updateBidDto) {

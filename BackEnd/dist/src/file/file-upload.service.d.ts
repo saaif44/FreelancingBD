@@ -15,6 +15,7 @@ export declare class FileUploadService {
         serviceId: number;
         senderId: number;
         recipientId: number;
+        jobFileId: number;
     } | {
         message: string;
         filename: string;

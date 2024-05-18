@@ -2,7 +2,7 @@ export declare class CreateJobDto {
     title: string;
     description: string;
     budget?: number;
-    deadline?: Date;
+    deadline?: string;
     is_payment_verified?: boolean;
     is_job_completed?: boolean;
     created_at?: Date;
@@ -10,13 +10,14 @@ export declare class CreateJobDto {
     client_profile_id?: number;
     freelancer_profile_id?: number;
     payslip?: any;
+    constructor(createJobDto: CreateJobDto);
 }
 export declare class CreateServiceDto {
     title: string;
     description: string;
-    standard_offer: number;
-    premium_offer: number;
-    butter_offer: number;
+    standard_offer?: number;
+    premium_offer?: number;
+    butter_offer?: number;
     freelancer_profile_id?: number;
 }
 export declare class CreateBidDto {
@@ -24,7 +25,8 @@ export declare class CreateBidDto {
     attachment: string;
     offer_time: number;
     offer_rate: number;
-    freelancer_profile_id: number;
+    userId: number;
+    jobId: number;
 }
 export declare class UpdateBidDto {
     description?: string;

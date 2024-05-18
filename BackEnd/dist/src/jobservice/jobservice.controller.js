@@ -12,7 +12,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ServiceController = exports.JobController = void 0;
+exports.JobController = void 0;
 const common_1 = require("@nestjs/common");
 const jobservice_service_1 = require("./jobservice.service");
 const jobservice_dto_1 = require("./dto/jobservice.dto");
@@ -22,23 +22,6 @@ let JobController = class JobController {
     }
     async createJob(createJobDto) {
         return this.jobService.createJob(createJobDto);
-    }
-};
-exports.JobController = JobController;
-__decorate([
-    (0, common_1.Post)(),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [jobservice_dto_1.CreateJobDto]),
-    __metadata("design:returntype", Promise)
-], JobController.prototype, "createJob", null);
-exports.JobController = JobController = __decorate([
-    (0, common_1.Controller)('jobs'),
-    __metadata("design:paramtypes", [jobservice_service_1.JobService])
-], JobController);
-let ServiceController = class ServiceController {
-    constructor(jobService) {
-        this.jobService = jobService;
     }
     async createService(createServiceDto) {
         return this.jobService.createService(createServiceDto);
@@ -50,21 +33,28 @@ let ServiceController = class ServiceController {
         return this.jobService.updateBid(+id, updateBidDto);
     }
 };
-exports.ServiceController = ServiceController;
+exports.JobController = JobController;
 __decorate([
-    (0, common_1.Post)(),
+    (0, common_1.Post)('createjob'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [jobservice_dto_1.CreateJobDto]),
+    __metadata("design:returntype", Promise)
+], JobController.prototype, "createJob", null);
+__decorate([
+    (0, common_1.Post)('createservice'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [jobservice_dto_1.CreateServiceDto]),
     __metadata("design:returntype", Promise)
-], ServiceController.prototype, "createService", null);
+], JobController.prototype, "createService", null);
 __decorate([
-    (0, common_1.Post)('bids'),
+    (0, common_1.Post)('createbid'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [jobservice_dto_1.CreateBidDto]),
     __metadata("design:returntype", Promise)
-], ServiceController.prototype, "createBid", null);
+], JobController.prototype, "createBid", null);
 __decorate([
     (0, common_1.Put)('bids/:id'),
     __param(0, (0, common_1.Param)('id')),
@@ -72,9 +62,9 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, jobservice_dto_1.UpdateBidDto]),
     __metadata("design:returntype", Promise)
-], ServiceController.prototype, "updateBid", null);
-exports.ServiceController = ServiceController = __decorate([
-    (0, common_1.Controller)('services'),
+], JobController.prototype, "updateBid", null);
+exports.JobController = JobController = __decorate([
+    (0, common_1.Controller)('jobservice'),
     __metadata("design:paramtypes", [jobservice_service_1.JobService])
-], ServiceController);
+], JobController);
 //# sourceMappingURL=jobservice.controller.js.map

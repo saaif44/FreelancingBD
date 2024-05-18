@@ -16,17 +16,13 @@ export declare class JobController {
         client_profile_id: number;
         freelancer_profile_id: number;
     }>;
-}
-export declare class ServiceController {
-    private jobService;
-    constructor(jobService: JobService);
     createService(createServiceDto: CreateServiceDto): Promise<{
         id: number;
         title: string;
         description: string;
-        standard_offer: import("@prisma/client/runtime/library").Decimal;
-        premium_offer: import("@prisma/client/runtime/library").Decimal;
-        butter_offer: import("@prisma/client/runtime/library").Decimal;
+        standard_offer: number;
+        premium_offer: number;
+        butter_offer: number;
         freelancer_profile_id: number;
     }>;
     createBid(createBidDto: CreateBidDto): Promise<{
@@ -38,6 +34,7 @@ export declare class ServiceController {
         created_at: Date;
         updated_at: Date;
         freelancer_profile_id: number;
+        jobId: number;
     }>;
     updateBid(id: string, updateBidDto: UpdateBidDto): Promise<{
         id: number;
@@ -48,5 +45,6 @@ export declare class ServiceController {
         created_at: Date;
         updated_at: Date;
         freelancer_profile_id: number;
+        jobId: number;
     }>;
 }

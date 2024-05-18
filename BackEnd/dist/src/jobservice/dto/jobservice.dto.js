@@ -2,6 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateBidDto = exports.CreateBidDto = exports.CreateServiceDto = exports.CreateJobDto = void 0;
 class CreateJobDto {
+    constructor(createJobDto) {
+    }
 }
 exports.CreateJobDto = CreateJobDto;
 class CreateServiceDto {

@@ -2,26 +2,22 @@ import { Controller, Post, Body, Put, Param, Delete } from '@nestjs/common';
 import { JobService } from './jobservice.service';
 import { CreateJobDto, CreateServiceDto, CreateBidDto, UpdateBidDto } from './dto/jobservice.dto';
 
-@Controller('jobs')
+@Controller('jobservice')
 export class JobController {
   constructor(private jobService: JobService) {}
 
-  @Post()
+  @Post('createjob')
   async createJob(@Body() createJobDto: CreateJobDto) {
     return this.jobService.createJob(createJobDto);
   }
-}
 
-@Controller('services')
-export class ServiceController {
-  constructor(private jobService: JobService) {}
-
-  @Post()
+  @Post('createservice')
   async createService(@Body() createServiceDto: CreateServiceDto) {
+    
     return this.jobService.createService(createServiceDto);
   }
 
-  @Post('bids') 
+  @Post('createbid') 
   async createBid(@Body() createBidDto: CreateBidDto) {
     return this.jobService.createBid(createBidDto);
   }

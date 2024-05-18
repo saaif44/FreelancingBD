@@ -3,7 +3,7 @@ export class CreateJobDto {
     title: string;
     description: string;
     budget?: number;
-    deadline?: Date;
+    deadline?: string;
     is_payment_verified?: boolean;
     is_job_completed?: boolean;
     created_at?: Date;
@@ -11,27 +11,34 @@ export class CreateJobDto {
     client_profile_id?: number;
     freelancer_profile_id?: number;
     payslip?: any; // Assuming Payslip type
+
+    constructor(createJobDto: CreateJobDto) {
+      
+    }
+
   }
   
   // create-service.dto.ts
   export class CreateServiceDto {
     title: string;
     description: string;
-    standard_offer: number;
-    premium_offer: number;
-    butter_offer: number;
+    standard_offer?: number;
+    premium_offer?: number;
+    butter_offer?: number;
     freelancer_profile_id?: number;
   }
   
 
-  // create-bid.dto.ts
-export class CreateBidDto {
+  export class CreateBidDto {
     description: string;
     attachment: string;
     offer_time: number;
     offer_rate: number;
-    freelancer_profile_id: number;
+    userId: number; // This will be used to reference FreelancerProfile
+    jobId: number;  // Add this field to reference the job
   }
+  
+  
   
   // update-bid.dto.ts
   export class UpdateBidDto {
@@ -40,4 +47,7 @@ export class CreateBidDto {
     offer_time?: number;
     offer_rate?: number;
   }
+  
+
+
   
