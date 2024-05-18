@@ -8,6 +8,3 @@ export class ChangeRoleDto {
   newRole: RoleType;
 }
 
-export class servicesDto{
-  
-}

@@ -16,6 +16,7 @@ exports.JobController = void 0;
 const common_1 = require("@nestjs/common");
 const jobservice_service_1 = require("./jobservice.service");
 const jobservice_dto_1 = require("./dto/jobservice.dto");
+const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 let JobController = class JobController {
     constructor(jobService) {
         this.jobService = jobService;
@@ -26,11 +27,25 @@ let JobController = class JobController {
     async createService(createServiceDto) {
         return this.jobService.createService(createServiceDto);
     }
-    async createBid(createBidDto) {
-        return this.jobService.createBid(createBidDto);
+    async createBid(createBidDto, request) {
+        try {
+            return await this.jobService.createBid(createBidDto);
+        }
+        catch (error) {
+            if (error instanceof common_1.BadRequestException) {
+                throw new common_1.BadRequestException(error.message);
+            }
+            throw new common_1.HttpException('Internal server error', 500);
+        }
     }
-    async updateBid(id, updateBidDto) {
-        return this.jobService.updateBid(+id, updateBidDto);
+    async getAllServices() {
+        return this.jobService.getAllServices();
+    }
+    async getAllJobs() {
+        return this.jobService.getAllJobs();
+    }
+    async getAllBids() {
+        return this.jobService.getAllBids();
     }
 };
 exports.JobController = JobController;
@@ -50,19 +65,31 @@ __decorate([
 ], JobController.prototype, "createService", null);
 __decorate([
     (0, common_1.Post)('createbid'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [jobservice_dto_1.CreateBidDto]),
+    __metadata("design:paramtypes", [jobservice_dto_1.CreateBidDto, Object]),
     __metadata("design:returntype", Promise)
 ], JobController.prototype, "createBid", null);
 __decorate([
-    (0, common_1.Put)('bids/:id'),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)()),
+    (0, common_1.Get)('services'),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, jobservice_dto_1.UpdateBidDto]),
+    __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
-], JobController.prototype, "updateBid", null);
+], JobController.prototype, "getAllServices", null);
+__decorate([
+    (0, common_1.Get)('jobs'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], JobController.prototype, "getAllJobs", null);
+__decorate([
+    (0, common_1.Get)('bids'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], JobController.prototype, "getAllBids", null);
 exports.JobController = JobController = __decorate([
     (0, common_1.Controller)('jobservice'),
     __metadata("design:paramtypes", [jobservice_service_1.JobService])

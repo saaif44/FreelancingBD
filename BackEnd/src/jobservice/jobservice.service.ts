@@ -1,7 +1,7 @@
 import { Injectable , BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateJobDto, CreateServiceDto, CreateBidDto, UpdateBidDto } from './dto/jobservice.dto';
-import { FreelancerProfile, Job, Bid, Service } from '@prisma/client';
+import { BidFetchto,CreateJobDto, CreateServiceDto, CreateBidDto, UpdateBidDto, JobDFetchto, ServiceFetchDto } from './dto/jobservice.dto';
+import { FreelancerProfile, Job, Bid, Service, Prisma } from '@prisma/client';
 
 
 
@@ -10,13 +10,12 @@ export class JobService {
   constructor(private prisma: PrismaService) {}
 
   async createJob(createJobDto: CreateJobDto) {
-
-
-
     return this.prisma.job.create({
       data: createJobDto,
     });
   }
+
+ 
 
   async createService(createServiceDto: CreateServiceDto) {
     return this.prisma.service.create({
@@ -25,56 +24,65 @@ export class JobService {
   }
 
   async createBid(createBidDto: CreateBidDto) {
-    const { description, attachment, offer_time, offer_rate, userId, jobId } = createBidDto;
-
-    // Find the FreelancerProfile using userId
-    const freelancerProfile = await this.prisma.freelancerProfile.findUnique({
-      where: { userId: userId },
-    });
-
-    if (!freelancerProfile) {
-      throw new Error('FreelancerProfile with the specified userId does not exist');
-    }
-
-    // Check if a bid already exists for this job from this freelancer
-    const existingBid = await this.prisma.bid.findFirst({
-      where: {
-        freelancer_profile_id: freelancerProfile.userId,
-        jobId: jobId,
-      },
-    });
-
-    if (existingBid) {
-      throw new BadRequestException('You have already made a bid for this job.');
-    }
-
-    // Create the bid
-    return this.prisma.bid.create({
-      data: {
-        description,
-        attachment,
-        offer_time,
-        offer_rate,
-        FreelancerProfile: {
-          connect: {
-            id: freelancerProfile.id,
-          },
+    const { description, attachment, offer_time, offer_rate, freelancer_profile_id, jobId } = createBidDto;
+    try {
+      return await this.prisma.bid.create({
+        data: {
+          description,
+          attachment,
+          offer_time,
+          offer_rate,
+          FreelancerProfile: { connect: { id: freelancer_profile_id } },
+          Job: { connect: { id: jobId } },
         },
-        job: {
-          connect: {
-            id: jobId,
-          },
-        },
-      },
-    });
+      });
+    } catch (error) {
+      if (error.code === 'P2002') { // Prisma unique constraint error code
+        throw new BadRequestException('You have already bidded on this job.');
+      }
+      throw error;
+    }
   }
-  
 
-  async updateBid(id: number, updateBidDto: UpdateBidDto) {
-    return this.prisma.bid.update({
-      where: { id },
-      data: updateBidDto,
+
+
+  async getAllJobs(): Promise<JobDFetchto[]> {
+    const jobs = await this.prisma.job.findMany({
+      select: {
+        title: true,
+        description: true,
+        budget: true,
+        deadline: true,
+        is_payment_verified: true,
+        is_job_completed: true,
+        created_at: true,
+        updated_at: true,
+        client_profile_id: true,
+        freelancer_profile_id: true,
+      },
     });
+    return jobs;
+  }
+
+
+  async getAllServices(): Promise<ServiceFetchDto[]> {
+    const services = await this.prisma.service.findMany({
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        standard_offer: true,
+        premium_offer: true,
+        butter_offer: true,
+        freelancer_profile_id: true,
+      },
+    });
+    return services;
+  }
+
+
+  async getAllBids(): Promise<Bid[]> {
+    return this.prisma.bid.findMany();
   }
 
 }

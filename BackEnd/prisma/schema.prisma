@@ -146,7 +146,7 @@ model Job {
   id                   Int      @id @default(autoincrement())
   title                String?
   description          String?
-  budget               Decimal?
+  budget               Int?
   deadline             DateTime?
   is_payment_verified Boolean?
   is_job_completed    Boolean?
@@ -160,7 +160,6 @@ model Job {
   file File[]
   bids Bid[]
 
-
 @@map("jobs")
 
 }
@@ -170,16 +169,17 @@ model Bid {
   description          String?
   attachment           String?
   offer_time           Int?
-  offer_rate           Decimal?
+  offer_rate           Int?
   created_at           DateTime @default(now())
   updated_at           DateTime @updatedAt
-  freelancer_profile_id Int @unique
-  FreelancerProfile FreelancerProfile @relation(fields: [freelancer_profile_id], references: [id])
+  freelancer_profile_id Int?
+  FreelancerProfile FreelancerProfile? @relation(fields: [freelancer_profile_id], references: [id])
   file File[]
   jobId               Int
-  job Job? @relation(fields: [jobId], references: [id])
+  Job Job? @relation(fields: [jobId], references: [id])
 
   @@map("bids")
+  @@unique([freelancer_profile_id,jobId])
 
 }
 

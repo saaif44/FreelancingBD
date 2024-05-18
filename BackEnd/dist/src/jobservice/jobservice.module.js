@@ -10,11 +10,17 @@ exports.JobserviceModule = void 0;
 const common_1 = require("@nestjs/common");
 const jobservice_service_1 = require("./jobservice.service");
 const jobservice_controller_1 = require("./jobservice.controller");
+const jwt_1 = require("@nestjs/jwt");
+const users_module_1 = require("../users/users.module");
 let JobserviceModule = class JobserviceModule {
 };
 exports.JobserviceModule = JobserviceModule;
 exports.JobserviceModule = JobserviceModule = __decorate([
     (0, common_1.Module)({
+        imports: [users_module_1.UsersModule, jwt_1.JwtModule.register({
+                secret: process.env.JWT_SECRET || 'jwt-secret',
+                signOptions: { expiresIn: '1d' }
+            }),],
         controllers: [jobservice_controller_1.JobController],
         providers: [jobservice_service_1.JobService]
     })

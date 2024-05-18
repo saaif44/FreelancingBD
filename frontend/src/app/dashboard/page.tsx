@@ -5,7 +5,6 @@ import axios from 'axios';
 import RoleToggle from '../RoleToggle/page';
 import Cookies from 'js-cookie';
 
-
 const Dashboard = () => {
   const [projects, setProjects] = useState([]);
   const [services, setServices] = useState([]);
@@ -19,8 +18,8 @@ const Dashboard = () => {
   const [showBidForm, setShowBidForm] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState(null);
   const [bids, setBids] = useState([]);
-
-  
+  const [selectUserId, setSelectUserId] = useState(null);
+  const [userBiddedProjects, setUserBiddedProjects] = useState([]);
   
   if (logouts) {
     Cookies.remove('accessToken');
@@ -28,7 +27,6 @@ const Dashboard = () => {
   }
 
   const handleLogout = () => setLogouts(true);
-
 
   const profileOptions = [
     { label: 'Profile', onClick: () => window.location.href = '/profile' },
@@ -48,13 +46,15 @@ const Dashboard = () => {
     }
   }, []);
 
+
+
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         const response = await axios.get('http://localhost:4000/dashboard/', {
           headers: { Authorization: `Bearer ${authToken}` },
         });
-        setProjects(response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+        setProjects(response.data.sort((a, b) => b.id - a.id));
       } catch (error) {
         console.error('Error fetching projects:', error);
       }
@@ -65,10 +65,10 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/services/', {
+        const response = await axios.get('http://localhost:4000/jobservice/services/', {
           headers: { Authorization: `Bearer ${authToken}` },
         });
-        setServices(response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+        setServices(response.data.sort((a, b) => b.id - a.id));
       } catch (error) {
         console.error('Error fetching services:', error);
       }
@@ -83,6 +83,7 @@ const Dashboard = () => {
           headers: { Authorization: `Bearer ${authToken}` },
         });
         setProfileData(response.data);
+        setSelectUserId(response.data.id);
       } catch (error) {
         console.error('Error fetching user profile:', error);
       }
@@ -91,19 +92,26 @@ const Dashboard = () => {
   }, [authToken]);
 
   useEffect(() => {
-    const fetchUserBids = async () => {
+    const fetchBids = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/bids/', {
-          headers: { Authorization: `Bearer ${authToken}` },
-        });
+        const response = await axios.get('http://localhost:4000/jobservice/bids');
         setBids(response.data);
       } catch (error) {
-        console.error('Error fetching user bids:', error);
+        console.error('Error fetching bids:', error);
       }
     };
-    fetchUserBids();
-  }, [authToken]);
+    fetchBids();
+  }, []);
 
+  useEffect(() => {
+    // Assuming userId is available in your context or state
+    const userId = selectUserId; // Replace with actual userId
+
+    // Filter bids to find projects user has bidded on
+    const userBids = bids.filter(bid => bid.freelancer_profile_id === userId);
+    const userBiddedProjects = userBids.map(bid => bid.job_id);
+    setUserBiddedProjects(userBiddedProjects);
+  }, [bids]);
 
 
   const handleBidButtonClick = (projectId) => {
@@ -123,8 +131,10 @@ const Dashboard = () => {
       window.location.reload();  // Reload to update the displayed data
     } catch (error) {
       console.error(`Error creating ${endpoint}:`, error);
-      if (error.response?.data?.message) {
-        alert(error.response.data.message);
+  
+      // Check if the error message indicates that the freelancer has already bid on the job
+      if (error.response && error.response.data && error.response.data.message) {
+        alert(error.response.data.message);  // Display the custom error message from the backend
       } else {
         alert(`An error occurred while creating the ${endpoint.includes('createjob') ? 'job' : endpoint.includes('createservice') ? 'service' : 'bid'}.`);
       }
@@ -170,6 +180,11 @@ const Dashboard = () => {
 
       <div className="dashboard-container">
         <h2>Dashboard</h2>
+        <div>
+          {selectUserId && (
+            <p>User ID: {selectUserId}</p>
+          )}
+        </div>
         <div className="action-buttons">
           {profileData?.role === 'FREELANCER' ? (
             <button className="create-button" onClick={() => setShowServiceForm(true)}>
@@ -186,11 +201,12 @@ const Dashboard = () => {
           <div className="service-list">
             {services.map((service) => (
               <div className="service-card" key={service.id}>
-                <h3>{service.title}</h3>
+               
+               <h3 style={{ fontSize: '30px', color: 'blue' , fontWeight:'bold'}}>{service.title}</h3>
                 <p>{service.description}</p>
                 <p className="offer">Standard Offer: ${service.standard_offer}</p>
-                <p className="offer">Budget Offer: ${service.budget_offer}</p>
-                <p className="offer">Premium Offer: ${service.premium_offer}</p>
+                <p className="offer">Budget Offer: ${service.premium_offer}</p>
+                <p className="offer">Premium Offer: ${service.butter_offer}</p>
               </div>
             ))}
           </div>
@@ -210,7 +226,10 @@ const Dashboard = () => {
                     <p className={`status ${project.is_payment_verified ? 'verified' : 'pending'}`}>
                       {project.is_payment_verified ? 'Payment Verified' : 'Payment Pending'}
                     </p>
-                    {!bids.find((bid) => bid.projectId === project.id) && (
+                    <p>Posted on {new Date(project.created_at).toLocaleString()}</p> {/* Include creation date */}
+                    {userBiddedProjects.includes(project.id) ? (
+                      <p>You are already Bidded on this JOB. You will be soon notified by message</p>
+                    ) : (
                       <button onClick={() => handleBidButtonClick(project.id)} className="bid-button">
                         Bid
                       </button>
@@ -233,7 +252,8 @@ const Dashboard = () => {
                   handleFormSubmit('jobservice/createjob', {
                     title: data.get('title'),
                     description: data.get('description'),
-                    budget: parseFloat(data.get('budget')),
+                    budget: parseInt(data.get('budget')),
+                    client_profile_id: selectUserId,
                     deadline: new Date(data.get('deadline')).toISOString(),
                   });
                 }}
@@ -260,9 +280,9 @@ const Dashboard = () => {
                   handleFormSubmit('jobservice/createservice', {
                     title: data.get('title'),
                     description: data.get('description'),
-                    standard_offer: parseFloat(data.get('standard_offer')),
-                    budget_offer: parseFloat(data.get('budget_offer')),
-                    premium_offer: parseFloat(data.get('premium_offer')),
+                    standard_offer: parseInt(data.get('standard_offer')),
+                    premium_offer: parseInt(data.get('budget_offer')),
+                    butter_offer: parseInt(data.get('premium_offer')),
                   });
                 }}
               >
@@ -290,7 +310,7 @@ const Dashboard = () => {
                     description: data.get('description'),
                     offer_time: parseInt(data.get('offer_time')),
                     offer_rate: parseFloat(data.get('offer_rate')),
-                    userId: profileData?.userId,
+                    freelancer_profile_id: selectUserId,
                     jobId: selectedProjectId,
                   });
                 }}
@@ -298,14 +318,12 @@ const Dashboard = () => {
                 <input name="description" placeholder="Bid Description" required />
                 <input type="number" name="offer_time" placeholder="Offer Time (in hours)" required />
                 <input type="number" name="offer_rate" placeholder="Offer Rate" required />
-                <input type="hidden" name="userId" value={profileData?.userId} />
                 <button type="submit">Submit</button>
                 <button type="button" onClick={() => setShowBidForm(false)}>Cancel</button>
               </form>
             </div>
           </div>
         )}
-
       </div>
     </div>
   );

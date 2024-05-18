@@ -75,7 +75,6 @@ export declare class ProfileService {
         avatarUrl: string;
     }>;
     getUserData(userId: number, data: UserDataDto): Promise<{
-        id: number;
         username: string;
         email: string;
         password: string;
@@ -83,8 +82,9 @@ export declare class ProfileService {
         balance: Prisma.Decimal;
         language_known: string;
         nationality: string;
-        address: string;
         phone_number: string;
+        id: number;
+        address: string;
         FreelancerProfile: {
             id: number;
             review: string;

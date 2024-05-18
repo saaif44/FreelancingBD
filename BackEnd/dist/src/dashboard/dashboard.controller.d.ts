@@ -7,7 +7,7 @@ export declare class DashboardController {
         id: number;
         title: string;
         description: string;
-        budget: import("@prisma/client/runtime/library").Decimal;
+        budget: number;
         deadline: Date;
         is_payment_verified: boolean;
         is_job_completed: boolean;
