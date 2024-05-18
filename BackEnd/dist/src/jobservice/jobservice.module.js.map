@@ -1,0 +1,1 @@
+{"version":3,"file":"jobservice.module.js","sourceRoot":"","sources":["../../../src/jobservice/jobservice.module.ts"],"names":[],"mappings":";;;;;;;;;AAAA,2CAAwC;AACxC,6DAAkD;AAClD,mEAAwD;AAOjD,IAAM,gBAAgB,GAAtB,MAAM,gBAAgB;CAAG,CAAA;AAAnB,4CAAgB;2BAAhB,gBAAgB;IAJ5B,IAAA,eAAM,EAAC;QACN,WAAW,EAAE,CAAC,qCAAa,CAAC;QAC5B,SAAS,EAAE,CAAC,+BAAU,CAAC;KACxB,CAAC;GACW,gBAAgB,CAAG"}

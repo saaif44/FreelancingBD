@@ -19,12 +19,13 @@ import { DashboardController } from './dashboard/dashboard.controller';
 import { DashboardService } from './dashboard/dashboard.service';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { AppGateway } from '../src/app.gateway';
+import { JobserviceModule } from './jobservice/jobservice.module';
 
 @Module({
   imports: [ FileModule, AuthModule, PrismaModule, UsersModule, ProfileModule, JwtModule.register({
     secret: process.env.JWT_SECRET || 'jwt-secret',
     signOptions: { expiresIn: '1d' },
-  }), MessageModule, MulterModule.register(multerConfig), TransactionModule, DashboardModule,  ],
+  }), MessageModule, MulterModule.register(multerConfig), TransactionModule, DashboardModule, JobserviceModule, ],
   controllers: [ FileController, TransactionController, DashboardController, ],
   providers: [ AppGateway, FileUploadService, TransactionService, DashboardService],
 })

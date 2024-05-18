@@ -28,14 +28,14 @@ model User {
   address       String
   phone_number  String  @unique
   nid_number    String
-  FreelancerProfile FreelancerProfile?
+  FreelancerProfile       FreelancerProfile?
   ClientProfile ClientProfile?
   avatarUrl     String?
   chatrooms     Chatroom[] @relation("chatroomUser")
   payslipSender             Payslip[]   @relation("PayslipSender")
   payslipReceiver           Payslip[]   @relation("PayslipReceiver")
-  //sentTransactions          Transaction[]      @relation("SentTransactions")
-  //receivedTransactions      Transaction[]  @relation("ReceivedTransactions")
+  sentTransactions          Transaction[]      @relation("SentTransactions")
+  receivedTransactions      Transaction[]  @relation("ReceivedTransactions")
   sentMessages                  Message[]      @relation("SentMessagesToUser")
   recievedMessages              Message[]  @relation("ReceivedMessagesFromUser")
   filesFromUsers              File[] @relation("FileSentUser")
@@ -51,10 +51,10 @@ model FreelancerProfile {
   created_services Int?
   active_jobs      Int?
   userId          Int @unique
-  user            User?     @relation(fields: [userId], references: [id])
+  user            User     @relation(fields: [userId], references: [id])
   Freelancerskills Skill[]
-  //services        Service[]
-  //job Job?
+  services        Service[]
+  job Job[]
   bid Bid[]
 }
 
@@ -65,9 +65,9 @@ model ClientProfile {
   avg_budget    Decimal?
   created_jobs  Int?
   userId          Int @unique
-  user          User?     @relation(fields: [userId], references: [id])
+  user          User     @relation(fields: [userId], references: [id])
   Requiredskills Skill[]
- // job Job?
+ job Job[]
 }
 
 model Skill {
@@ -135,7 +135,7 @@ model Service {
   premium_offer      Decimal
   butter_offer       Decimal
   freelancer_profile_id Int?
-  // FreelancerProfile FreelancerProfile @relation(fields: [freelancer_profile_id], references: [id])
+  FreelancerProfile FreelancerProfile? @relation(fields: [freelancer_profile_id], references: [id])
   file File[]
 }
 
@@ -149,8 +149,8 @@ model Job {
   is_job_completed    Boolean?
   created_at           DateTime @default(now())
   updated_at           DateTime @updatedAt
-  // ClientProfile       ClientProfile   @relation(fields: [client_profile_id], references: [id])
-  // FreelancerProfile   FreelancerProfile @relation(fields: [freelancer_profile_id], references: [id])
+  ClientProfile       ClientProfile?   @relation(fields: [client_profile_id], references: [id])
+  FreelancerProfile   FreelancerProfile? @relation(fields: [freelancer_profile_id], references: [id])
   client_profile_id    Int?
   freelancer_profile_id Int?
   payslip             Payslip?
@@ -177,9 +177,9 @@ model Transaction {
   createdAt      DateTime @default(now())
 
   // relationship with User for sender and receiver
-  //sender         User     @relation("SentTransactions", fields: [senderId], references: [id])
+  sender         User?     @relation("SentTransactions", fields: [senderId], references: [id])
   senderId       Int? 
-  //receiver       User     @relation("ReceivedTransactions", fields: [receiverId], references: [id])
+  receiver       User?     @relation("ReceivedTransactions", fields: [receiverId], references: [id])
   receiverId     Int? 
   timestamp      DateTime @default(now())
 }

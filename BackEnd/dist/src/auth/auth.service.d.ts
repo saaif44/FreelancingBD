@@ -13,4 +13,6 @@ export declare class AuthService {
     }>;
     validateUser(userId: number): Promise<User>;
     verifyPassword(password: string, userId: number): Promise<boolean>;
+    private createFreelancerProfile;
+    private createClientProfile;
 }

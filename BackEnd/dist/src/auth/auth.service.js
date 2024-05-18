@@ -34,6 +34,8 @@ let AuthService = class AuthService {
         const user = await this.prisma.user.create({
             data: userData,
         });
+        await this.createFreelancerProfile(user.id);
+        await this.createClientProfile(user.id);
         return user;
     }
     async signin(signinDto) {
@@ -59,6 +61,20 @@ let AuthService = class AuthService {
             throw new common_1.HttpException('User not found', common_1.HttpStatus.NOT_FOUND);
         }
         return user.password === password;
+    }
+    async createFreelancerProfile(userId) {
+        await this.prisma.freelancerProfile.create({
+            data: {
+                userId,
+            },
+        });
+    }
+    async createClientProfile(userId) {
+        await this.prisma.clientProfile.create({
+            data: {
+                userId,
+            },
+        });
     }
 };
 exports.AuthService = AuthService;

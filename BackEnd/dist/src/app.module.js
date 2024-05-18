@@ -27,6 +27,7 @@ const dashboard_controller_1 = require("./dashboard/dashboard.controller");
 const dashboard_service_1 = require("./dashboard/dashboard.service");
 const dashboard_module_1 = require("./dashboard/dashboard.module");
 const app_gateway_1 = require("../src/app.gateway");
+const jobservice_module_1 = require("./jobservice/jobservice.module");
 let AppModule = class AppModule {
     configure(consumer) {
         consumer
@@ -40,7 +41,7 @@ exports.AppModule = AppModule = __decorate([
         imports: [file_module_1.FileModule, auth_module_1.AuthModule, prisma_module_1.PrismaModule, users_module_1.UsersModule, profile_module_1.ProfileModule, jwt_1.JwtModule.register({
                 secret: process.env.JWT_SECRET || 'jwt-secret',
                 signOptions: { expiresIn: '1d' },
-            }), message_module_1.MessageModule, platform_express_1.MulterModule.register(multer_config_1.multerConfig), transaction_module_1.TransactionModule, dashboard_module_1.DashboardModule,],
+            }), message_module_1.MessageModule, platform_express_1.MulterModule.register(multer_config_1.multerConfig), transaction_module_1.TransactionModule, dashboard_module_1.DashboardModule, jobservice_module_1.JobserviceModule,],
         controllers: [file_controller_1.FileController, transaction_controller_1.TransactionController, dashboard_controller_1.DashboardController,],
         providers: [app_gateway_1.AppGateway, file_upload_service_1.FileUploadService, transaction_service_1.TransactionService, dashboard_service_1.DashboardService],
     })

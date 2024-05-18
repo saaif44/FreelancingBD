@@ -4,7 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
 import { SignupDto } from './dto/signup.dto';
 import { SigninDto } from './dto/signin.dto';
-import { User } from '.prisma/client';
+import { User, FreelancerProfile , ClientProfile } from '.prisma/client';
 import { Prisma } from '.prisma/client';
 
 @Injectable()
@@ -27,10 +27,16 @@ export class AuthService {
       
     } as Prisma.UserCreateInput; 
 
+    
+
     //crt new user to prisma
     const user = await this.prisma.user.create({
       data: userData,
     });
+
+    await this.createFreelancerProfile(user.id);
+    await this.createClientProfile(user.id);
+
     return user;
   }
 
@@ -75,7 +81,26 @@ export class AuthService {
     return user.password === password;
   }
 
-  
+  private async createFreelancerProfile(userId: number): Promise<void> {
+    // Create FreelancerProfile for the user
+    await this.prisma.freelancerProfile.create({
+      data: {
+        userId,
+        // Set other properties of FreelancerProfile as needed
+      },
+    });
+  }
+
+
+  private async createClientProfile(userId: number): Promise<void> {
+    // Create FreelancerProfile for the user
+    await this.prisma.clientProfile.create({
+      data: {
+        userId,
+        // Set other properties of FreelancerProfile as needed
+      },
+    });
+  }
 
 
 }
